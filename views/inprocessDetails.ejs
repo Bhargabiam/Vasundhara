@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <%- include('layouts/head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+      <div class="lds-ripple">
+        <div class="lds-pos"></div>
+        <div class="lds-pos"></div>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
+      <header class="topbar"><%- include('layouts/header') %></header>
+      <!-- ============================================================== -->
+      <!-- End Topbar header -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <aside class="left-sidebar"><%- include('layouts/sidebar') %></aside>
+      <!-- ============================================================== -->
+      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper  -->
+      <!-- ============================================================== -->
+      <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="page-breadcrumb">
+          <div class="row">
+            <div class="col-5 align-self-center">
+              <h4 class="page-title">Update Inprocess Data</h4>
+            </div>
+            <div class="col-7 align-self-center">
+              <div class="d-flex align-items-center justify-content-end">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="/">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Update Inprocess Data
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+          <!-- ============================================================== -->
+          <!-- Start Page Content -->
+          <!-- ============================================================== -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <span class="text-danger">*</span> Marks will be required. (^)
+                  Fill Details for add new customer into Database.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="round align-self-center round-success">
+                      <i class="ti-user"></i>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                      <span class="text-muted">Customer Name</span>
+                      <h4 id="customer-name"></h4>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                      <span class="text-muted">Mobile Number</span>
+                      <h4 id="customer-number"></h4>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2">
+                      <span class="text-muted">Type</span>
+                      <h4 id="customer-type"></h4>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2">
+                      <span class="text-muted">First Visit</span>
+                      <h4 id="first-visit"></h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ============================================================== -->
+          <!-- Form content -->
+          <!-- ============================================================== -->
+
+          <div class="row">
+            <div class="col-xl-8 col-lg-12 order-lg-2 order-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <form id="sale-form" class="form-horizontal r-separator">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="form-group">
+                          <label
+                            for="sec_mobile"
+                            class="control-label col-form-label"
+                            >2nd Mobile</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="sec-mobile"
+                            name="sec_mobile"
+                            placeholder="Another number Here"
+                          />
+                        </div>
+                      </div>
+                      <!-- <div class="col-sm-12 col-md-2">
+                        <div class="form-group">
+                          <label
+                            for="customer-type"
+                            class="control-label col-form-label"
+                            >Type</label
+                          >
+                          <select
+                            class="form-control"
+                            id="customer-type"
+                            name="customer_type"
+                          >
+                            <option value="Old">Old</option>
+                            <option value="New">New</option>
+                          </select>
+                        </div>
+                      </div> -->
+                      <div class="col-sm-12 col-md-2">
+                        <div class="form-group">
+                          <label
+                            for="metal-type"
+                            class="control-label col-form-label"
+                            >Metal Type</label
+                          >
+                          <select
+                            class="form-control"
+                            id="metal-type"
+                            name="metal_type"
+                          >
+                            <option>Diamond</option>
+                            <option>Gold</option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="form-group">
+                          <label
+                            for="walkin-source"
+                            class="control-label col-form-label"
+                            >Walkin Source</label
+                          >
+                          <select
+                            class="select2 form-control custom-select"
+                            id="walkin-source"
+                            name="walkin_source"
+                          >
+                            <option>Self</option>
+                            <option>Facebook</option>
+                            <option>Instagram</option>
+                            <option>Google</option>
+                            <option>Whatsapp</option>
+                            <option>Family Reference</option>
+                            <option>Friend Reference</option>
+                            <option>Exhibition</option>
+                            <option>Advertisement</option>
+                            <option>Others</option>
+                          </select>
+                        </div>
+                      </div> -->
+
+                      <!-- 2nd row for Form -->
+
+                      <div class="col-sm-12 col-md-2">
+                        <div class="form-group">
+                          <label
+                            for="executive-name"
+                            class="control-label col-form-label"
+                            >Executive</label
+                          >
+                          <select
+                            class="select2 form-control custom-select"
+                            id="executive-name"
+                            name="executive_name"
+                            required
+                          >
+                            <option value="">Select Name</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-2">
+                        <div class="form-group">
+                          <label
+                            for="associate-name"
+                            class="control-label col-form-label"
+                            >Associate</label
+                          >
+                          <select
+                            class="select2 form-control custom-select"
+                            id="associate-name"
+                            name="associate_name"
+                          >
+                            <option value="5">Select Name</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-2">
+                        <div class="form-group">
+                          <label
+                            for="product-name"
+                            class="control-label col-form-label"
+                            >Product</label
+                          >
+                          <select
+                            class="select2 form-control custom-select"
+                            id="product-name"
+                            name="product_name"
+                            required
+                          >
+                            <option value="">Select Name</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-2">
+                        <div class="form-group">
+                          <label
+                            for="fm-name"
+                            class="control-label col-form-label"
+                            >FM/SM/GM</label
+                          >
+                          <select
+                            class="form-control"
+                            id="fm-name"
+                            name="fm_name"
+                          >
+                            <option value="none">Select Name</option>
+                            <option>Rohan sir</option>
+                            <option>Puneet</option>
+                            <option>Jalandar</option>
+                            <option>Rajesh</option>
+                            <option>Bhavani</option>
+                            <option>Vasundhara Ma'am</option>
+                            <option>Ayushi Ma'am</option>
+                            <option>Neha Ma'am</option>
+                            <option>Harshita Ma'am</option>
+                            <option>Veerendra</option>
+                            <option>Khaza</option>
+                            <option>Ashok</option>
+                            <option>Abhilash</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="form-group">
+                          <label
+                            for="current-status"
+                            class="control-label col-form-label"
+                            >Current Status</label
+                          >
+                          <select
+                            class="select2 form-control custom-select"
+                            id="current-status"
+                            name="current_status"
+                          >
+                            <option>Requirement</option>
+                            <option>Happy</option>
+                            <option>UnHappy</option>
+                            <option>A-Happy</option>
+                            <option>order</option>
+                            <option>Service/Repair</option>
+                            <option>Inprocess</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="form-group">
+                          <label
+                            for="non-conversion"
+                            class="control-label col-form-label"
+                            >Non conversion</label
+                          >
+                          <select
+                            class="select2 form-control custom-select"
+                            id="non-conversion"
+                            name="non_conversion"
+                          >
+                            <option value="none">Select Reason</option>
+                            <option>Advance</option>
+                            <option>Order</option>
+                            <option>Visiting</option>
+                            <option>Repeated</option>
+                            <option>Requirement</option>
+                            <option>Inprocess</option>
+                            <option>Service/Repair</option>
+                            <option>Follow up</option>
+                            <option>Price issue</option>
+                            <option>Window Shopping</option>
+                            <option>Buy from another place</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-3">
+                        <div class="form-group">
+                          <label
+                            for="remarks"
+                            class="control-label col-form-label"
+                            >Remarks</label
+                          >
+                          <textarea
+                            id="remarks"
+                            class="form-control"
+                            rows="2"
+                            name="remarks"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-2">
+                        <div class="form-group">
+                          <label
+                            for="sale-date"
+                            class="control-label col-form-label"
+                            >Walkin Date</label
+                          >
+
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="sale-date"
+                            placeholder="Select Date"
+                            name="sale_date"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div
+                        id="followupDateDiv"
+                        class="col-sm-12 col-md-3 col-lg-2"
+                        style="display: none"
+                      >
+                        <div class="form-group">
+                          <label
+                            for="follwup-date"
+                            class="control-label col-form-label"
+                            >Next Follwup</label
+                          >
+
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="follwup-date"
+                            name="follwup_date"
+                            placeholder="Select Date"
+                            name="follwup-date"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="form-group">
+                          <label
+                            for="inprocess"
+                            class="control-label col-form-label"
+                            >Add Inprocess list</label
+                          >
+                          <br />
+                          <input
+                            class="form-group"
+                            type="checkbox"
+                            id="inprocess"
+                            name="inprocess"
+                            value="true"
+                            checked
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form button start -->
+                    <div class="card-body">
+                      <div class="form-group m-b-0 text-right">
+                        <button
+                          type="submit"
+                          class="btn btn-info waves-effect waves-light"
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="reset"
+                          class="btn btn-dark waves-effect waves-light"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ============================================================== -->
+          <!-- End PAge Content -->
+          <!-- ============================================================== -->
+          <!-- ============================================================== -->
+          <!-- Right sidebar -->
+          <!-- ============================================================== -->
+          <!-- .right-sidebar -->
+          <!-- ============================================================== -->
+          <!-- End Right sidebar -->
+          <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+          <%- include('layouts/footer') %>
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Page wrapper  -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- customizer Panel -->
+    <!-- ============================================================== -->
+    <!-- <aside class="customizer"></aside>
+    <div class="chat-windows"></div> -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <%- include('layouts/scriptsLink') %>
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function () {
+        "use strict";
+        window.addEventListener(
+          "load",
+          function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName("needs-validation");
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(
+              forms,
+              function (form) {
+                form.addEventListener(
+                  "submit",
+                  function (event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add("was-validated");
+                  },
+                  false
+                );
+              }
+            );
+          },
+          false
+        );
+      })();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const saleForm = document.getElementById("sale-form");
+        const secMobileInput = document.getElementById("sec-mobile");
+        const metalInput = document.getElementById("metal-type");
+        const executiveSelect = document.getElementById("executive-name");
+        const associativeSelect = document.getElementById("associate-name");
+        const productSelect = document.getElementById("product-name");
+        const fmNameInput = document.getElementById("fm-name");
+        const statusInput = document.getElementById("current-status");
+        const conversionInput = document.getElementById("non-conversion");
+        const remarksInput = document.getElementById("remarks");
+        // const dateInput = document.getElementById("sale-date");
+        const followupDateInput = document.getElementById("follwup-date");
+        const inprocessInput = document.getElementById("inprocess");
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const processId = urlParams.get("processId");
+
+        // customer Details
+        const cutomerNameH4 = document.getElementById("customer-name");
+        const customerMobH4 = document.getElementById("customer-number");
+        const customerTypeH4 = document.getElementById("customer-type");
+        const firstVisitH4 = document.getElementById("first-visit");
+
+        updateDateField();
+
+        // Add event listener to the checkbox
+        inprocessInput.addEventListener("change", updateDateField);
+
+        function updateDateField() {
+          if (inprocessInput.checked) {
+            followupDateInput.required = true;
+            window.document.getElementById("followupDateDiv").style.display =
+              "block";
+          } else {
+            followupDateInput.required = false;
+            window.document.getElementById("followupDateDiv").style.display =
+              "none";
+          }
+        }
+
+        axios.get("/executive/getExecutive").then((response) => {
+          const executiveList = response.data;
+          executiveList.forEach((executive) => {
+            // Create a new option element for executiveSelect
+            const executiveOption = document.createElement("option");
+            executiveOption.value = executive.executive_id;
+            executiveOption.text = executive.executive_name;
+            executiveSelect.appendChild(executiveOption);
+
+            // Create a new option element for associativeSelect
+            const associativeOption = document.createElement("option");
+            associativeOption.value = executive.executive_id;
+            associativeOption.text = executive.executive_name;
+            associativeSelect.appendChild(associativeOption);
+          });
+        });
+
+        axios.get("/product/getProduct").then((response) => {
+          const productList = response.data;
+          productList.forEach((productListItem) => {
+            const productOption = document.createElement("option");
+
+            productOption.value = productListItem.product_id;
+            productOption.text = productListItem.product_name;
+            productSelect.appendChild(productOption);
+          });
+        });
+
+        axios
+          .get(`/inProcess/inprocessData/${processId}`)
+          .then((response) => {
+            const inProcessData = response.data;
+            if (inProcessData) {
+              getCustomerDetails(inProcessData.customer_id);
+              customerTypeH4.innerHTML = inProcessData.customer_type;
+              firstVisitH4.innerHTML = inProcessData.formatted_sale_date;
+              secMobileInput.value = inProcessData.second_mob;
+              metalInput.value = inProcessData.metal_type;
+              executiveSelect.value = inProcessData.executive_id;
+              associativeSelect.value = inProcessData.associate_id;
+              productSelect.value = inProcessData.product_id;
+              fmNameInput.value = inProcessData.fm_name;
+              statusInput.value = inProcessData.current_status;
+              conversionInput.value = inProcessData.non_conversion;
+              remarksInput.value = inProcessData.remarks;
+              followupDateInput.value = inProcessData.formatted_followup_date;
+            } else {
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching customer data:", error);
+          });
+
+        // get customer Details
+        const getCustomerDetails = (customerId) => {
+          axios
+            .get(`/customer/getCustomer/${customerId}`)
+            .then((response) => {
+              const customerData = response.data;
+
+              cutomerNameH4.innerHTML = customerData.customer_name;
+              customerMobH4.innerHTML = customerData.customer_mobile;
+            })
+            .catch((error) => {
+              console.error("Error fetching customer data:", error);
+            });
+        };
+
+        saleForm.addEventListener("submit", (event) => {
+          const saleFormData = new FormData(saleForm);
+          const saleDataObject = {};
+          saleFormData.forEach((value, key) => {
+            saleDataObject[key] = value;
+          });
+          if (saleDataObject.inprocess) {
+            event.preventDefault();
+            axios
+              .patch(
+                `/inProcess/updateInprocessData/${processId}`,
+                saleDataObject
+              )
+              .then((response) => {
+                if (response.status == 200) {
+                  saleForm.reset();
+                  window.location.href = "/customer/findCustomer";
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } else {
+            event.preventDefault();
+            axios
+              .post(`/sales/processToSale/${processId}`, saleDataObject)
+              .then((response) => {
+                if (response.status == 200) {
+                  axios
+                    .patch(`/inProcess/updateprocessStatus/${processId}`)
+                    .then((response) => {
+                      if (response.status == 200) {
+                        saleForm.reset();
+                        window.location.href = "/customer/findCustomer";
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(error.status, error.message);
+                    });
+                }
+              })
+              .catch((error) => {
+                console.error(error.response.data);
+              });
+          }
+
+          // console.log(saleDataObject);
+        });
+      });
+    </script>
+  </body>
+</html>

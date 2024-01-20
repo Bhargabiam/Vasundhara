@@ -1,0 +1,57 @@
+// Add new Customer In Database
+app.post("/api/addCustomer", async (req, res) => {
+  const {
+    mobile, name, email, address, dob,
+  } = req.body;
+  
+  try{
+    const isNewCustomerQuery = "SELECT customer_mobile FROM customer_details WHERE customer_mobile = $1"
+    const isNewCustomer = await db.query(isNewCustomerQuery, [mobile]);
+
+    if (!isNewCustomer) {
+      try {
+        const addCustomerQuery =
+          "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address, customer_dob) VALUES ($1,$2,$3,$4,$5);";
+        await db.query(addCustomerQuery, [
+          name,
+          mobile,
+          email,
+          address,
+          dob,
+        ]);
+
+        res.status(303).redirect(`/salesDetail?customer_mobile=${mobile}&customer_name=${name}`);
+      } catch (err) {
+        console.error(err.message);
+      }
+    } else {
+      const error = "Customer is already exist"
+      res.redirect(`/addNewCustomer?error=${error}`);
+    }
+  }catch(err){}
+  
+});
+
+
+// 
+
+// value code
+<% if (mobileNumber) { %> 
+  console.log(mobileNumber)
+  value="<%= mobileNumber%>"
+  
+<% }else{ %>
+  required
+  <% } %>
+
+
+
+  // const addCustomerForm = document.getElementById("add_new_customer");
+      // document.getElementById("submitButton").addEventListener("click", () => {
+      // Optionally, you can add additional validation here before submitting
+      // addCustomerForm.action = "/api/addCustomer";
+      // addCustomerForm.method = "post";
+      // addCustomerForm.submit();
+      // addCustomerForm.reset();
+      // window.location.href("/addSaleDetails")
+      // });

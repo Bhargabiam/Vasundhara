@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <%- include('layouts/head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+      <div class="lds-ripple">
+        <div class="lds-pos"></div>
+        <div class="lds-pos"></div>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
+      <header class="topbar"><%- include('layouts/header') %></header>
+      <!-- ============================================================== -->
+      <!-- End Topbar header -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <aside class="left-sidebar"><%- include('layouts/sidebar') %></aside>
+      <!-- ============================================================== -->
+      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper  -->
+      <!-- ============================================================== -->
+      <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="page-breadcrumb">
+          <div class="row">
+            <div class="col-5 align-self-center">
+              <h4 class="page-title">Add New Customer</h4>
+            </div>
+            <div class="col-7 align-self-center">
+              <div class="d-flex align-items-center justify-content-end">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="/">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Add New Customer
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+          <!-- ============================================================== -->
+          <!-- Start Page Content -->
+          <!-- ============================================================== -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <span class="text-danger">*</span> Marks will be required. (^)
+                  Fill Details for add new customer into Database.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============================================================== -->
+          <!-- Form content -->
+          <!-- ============================================================== -->
+          <div class="row">
+            <div class="col-xl-6 col-lg-8 col-md-12 m-auto">
+              <div class="card">
+                <div class="card-body">
+                  <form
+                    id="add_new_customer"
+                    class="form-horizontal striped-rows b-form needs-validation"
+                    novalidate
+                  >
+                    <div class="card-body">
+                      <h4 class="card-title">Personal Info</h4>
+                      <div class="form-group row">
+                        <div class="col-sm-3">
+                          <div class="b-label">
+                            <label
+                              for="customer_mobile"
+                              class="control-label col-form-label"
+                              >Contact No
+                              <span class="text-danger">*</span></label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="customer_mobile"
+                            name="customer_mobile"
+                            placeholder="Contact No Here"
+                            value=""
+                          />
+                          <div class="valid-feedback">Looks good!</div>
+                          <div class="invalid-feedback">
+                            Please Enter Contact number.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-sm-3">
+                          <div class="b-label">
+                            <label
+                              for="customer_name"
+                              class="control-label col-form-label"
+                              >Full Name
+                              <span class="text-danger">*</span></label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="customer_name"
+                            name="customer_name"
+                            placeholder="Full Name Here"
+                          />
+                          <div class="valid-feedback">Looks good!</div>
+                          <div class="invalid-feedback">Please Enter Name.</div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-sm-3">
+                          <div class="b-label">
+                            <label
+                              for="customer_email"
+                              class="control-label col-form-label"
+                              >Email:</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="customer_email"
+                            name="customer_email"
+                            placeholder="Email Here"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-sm-3">
+                          <div class="b-label">
+                            <label
+                              for="customer_address"
+                              class="control-label col-form-label"
+                              >City/State:</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="customer_address"
+                            name="customer_address"
+                            placeholder="City/State Here"
+                          />
+                        </div>
+                      </div>
+                      <!-- <div class="form-group row">
+                        <div class="col-sm-3">
+                          <div class="b-label">
+                            <label
+                              for="inputEmail3"
+                              class="control-label col-form-label"
+                              >Country:</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="inputEmail3"
+                            placeholder="Country Name Here"
+                          />
+                        </div>
+                      </div> -->
+                      <div class="form-group row">
+                        <div class="col-sm-3">
+                          <div class="b-label">
+                            <label
+                              for="customer_dob"
+                              class="control-label col-form-label"
+                              >Date of Birth:</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="customer_dob"
+                            name="customer_dob"
+                            placeholder="Date of Birth Here"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="card-body">
+                      <div class="form-group m-b-0 text-right">
+                        <button
+                          type="submit"
+                          id="submitButton"
+                          class="btn btn-info waves-effect waves-light"
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="reset"
+                          class="btn btn-dark waves-effect waves-light"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ============================================================== -->
+          <!-- End PAge Content -->
+          <!-- ============================================================== -->
+          <!-- ============================================================== -->
+          <!-- Right sidebar -->
+          <!-- ============================================================== -->
+          <!-- .right-sidebar -->
+          <!-- ============================================================== -->
+          <!-- End Right sidebar -->
+          <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+          <%- include('layouts/footer') %>
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Page wrapper  -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- customizer Panel -->
+    <!-- ============================================================== -->
+    <!-- <aside class="customizer"></aside>
+    <div class="chat-windows"></div> -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <%- include('layouts/scriptsLink') %>
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function () {
+        "use strict";
+        window.addEventListener(
+          "load",
+          function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName("needs-validation");
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(
+              forms,
+              function (form) {
+                form.addEventListener(
+                  "submit",
+                  function (event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add("was-validated");
+                  },
+                  false
+                );
+              }
+            );
+          },
+          false
+        );
+      })();
+      // const addCustomerForm = document.getElementById("add_new_customer");
+      // document.getElementById("submitButton").addEventListener("click", () => {
+      // Optionally, you can add additional validation here before submitting
+      // addCustomerForm.action = "/api/addCustomer";
+      // addCustomerForm.method = "post";
+      // addCustomerForm.submit();
+      // addCustomerForm.reset();
+      // window.location.href("/addSaleDetails")
+      // });
+      // for changing the mobile number depending on the request
+      document.addEventListener("DOMContentLoaded", () => {
+        // select mobile number field
+        // const submitButton = document.getElementById("submitButton");
+        // const form = document.getElementById("add_new_customer");
+        const mobileInput = document.getElementById("customer_mobile");
+        // receiving mobile number from URL
+        axios
+          .get(`/customer/addNewCustomer?mobileNumber=${mobileInput.value}`)
+          .then((response) => {
+            const urlMobileNumber = new URLSearchParams(
+              window.location.search
+            ).get("mobileNumber");
+            mobileInput.value = urlMobileNumber;
+          })
+          .catch((error) => console.error(error));
+
+        // submitButton.addEventListener("click", () => {
+        //   const formData = new FormData(form);
+        //   axios.post("/api/addCustomer", formData).then((response) => {
+        //     console.log(response);
+        //   });
+        // });
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("add_new_customer");
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          if (form.checkValidity()) {
+            // Send POST request using Axios
+            const formData = new FormData(form);
+            const jsonObject = {};
+            formData.forEach((value, key) => {
+              jsonObject[key] = value;
+            });
+            axios
+              .post("/customer/addCustomer", jsonObject)
+              .then((response) => {
+                if (response.data.status) {
+                  window.location.href = `/sales/addSaleDetails?customer_id=${response.data.customer_id}`;
+                }
+              })
+              .catch((error) => console.error(error));
+          } else {
+            // If form is invalid, trigger the form validation
+            form.reportValidity();
+          }
+        });
+      });
+
+      // submitting the form data
+    </script>
+  </body>
+</html>
