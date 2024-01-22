@@ -85,15 +85,141 @@ reportRoutes.get("/statusCount/:type/:to_date/:from_date", async (req, res) => {
   }
 
   try {
-    const statusCountReport = await db.query(statusCountQuery, [
-      to_date,
-      from_date,
-      type,
-    ]);
-    res.status(200).send({ Number: statusCountReport });
+    const statusCountReport = (
+      await db.query(statusCountQuery, [to_date, from_date, type])
+    ).rows[0];
+    res.status(200).send({ count: statusCountReport.count });
   } catch (err) {
     console.error(err);
     res.status(500).send({ err: "Internal Server Error" });
   }
 });
+
+// Count total number of inprocess query depend on dates
+
+reportRoutes.get("/inProcessCount/:to_date/:from_date", async (req, res) => {
+  const { to_date, from_date } = req.params;
+  const countInprocessQuery =
+    "SELECT COUNT(process_id) FROM customer_in_process WHERE followup_date BETWEEN $1 AND $2 AND process_status = true";
+
+  const isValidDate = (dateString) => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(dateString);
+  };
+
+  if (!isValidDate(to_date) || !isValidDate(from_date)) {
+    return res.status(400).json({ error: "Invalid date format" });
+  }
+
+  try {
+    const countResult = (
+      await db.query(countInprocessQuery, [to_date, from_date])
+    ).rows[0];
+    res.status(200).send({ count: countResult.count });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ err: "Internal Server Error" });
+  }
+});
+
+// Count total number of inprocess query depend on dates
+
+reportRoutes.get("/saleCount/:to_date/:from_date", async (req, res) => {
+  const { to_date, from_date } = req.params;
+  const countSalesQuery =
+    "SELECT COUNT(sales_id) FROM sales_data WHERE end_date BETWEEN $1 AND $2 AND sales_status = true";
+
+  const isValidDate = (dateString) => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(dateString);
+  };
+
+  if (!isValidDate(to_date) || !isValidDate(from_date)) {
+    return res.status(400).json({ error: "Invalid date format" });
+  }
+
+  try {
+    const countResult = (await db.query(countSalesQuery, [to_date, from_date]))
+      .rows[0];
+    res.status(200).send({ count: countResult.count });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ err: "Internal Server Error" });
+  }
+});
+
+// Product Wish count From Sales_data table depending on date and product_id;
+
+reportRoutes.get("/productCount/:id/:to_date/:from_date", async (req, res) => {
+  const { id, to_date, from_date } = req.params;
+  const productCountQuery =
+    "SELECT COUNT(sales_id) FROM sales_data WHERE end_date BETWEEN $1 AND $2 AND product_id = $3 AND sales_status = true";
+
+  const isValidDate = (dateString) => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(dateString);
+  };
+
+  if (!isValidDate(to_date) || !isValidDate(from_date)) {
+    return res.status(400).json({ error: "Invalid date format" });
+  }
+
+  const isValidId = (iDString) => {
+    const regex = /^PROD_\d{6}_\d{4}$/;
+    return regex.test(iDString);
+  };
+
+  if (!isValidId(id)) {
+    return res.status(400).json({ error: "Invalid Product ID" });
+  }
+
+  try {
+    const countResult = (
+      await db.query(productCountQuery, [to_date, from_date, id])
+    ).rows[0];
+    res.status(200).send({ count: countResult.count });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ err: "Internal Server Error" });
+  }
+});
+
+// Executive Wish From Sales_data table depending on date and executive_id;
+
+reportRoutes.get(
+  "/executiveReport/:id/:to_date/:from_date",
+  async (req, res) => {
+    const { id, to_date, from_date } = req.params;
+    const productCountQuery =
+      "SELECT sd.*, cd.customer_name, cd.customer_mobile, el.executive_name AS executive_name, al.executive_name AS associate_name, pl.product_name FROM sales_data sd JOIN customer_details cd ON cd.customer_id = sd.customer_id JOIN executive_list el ON el.executive_id = sd.executive_id JOIN executive_list al ON al.executive_id = sd.associate_id JOIN product_list pl ON pl.product_id = sd.product_id WHERE sd.end_date BETWEEN $1 AND $2 AND sd.executive_id = $3 AND sd.sales_status = true;";
+
+    const isValidDate = (dateString) => {
+      const regex = /^\d{4}-\d{2}-\d{2}$/;
+      return regex.test(dateString);
+    };
+
+    if (!isValidDate(to_date) || !isValidDate(from_date)) {
+      return res.status(400).json({ error: "Invalid date format" });
+    }
+
+    const isValidId = (iDString) => {
+      const regex = /^EXUT_\d{6}_\d{4}$/;
+      return regex.test(iDString);
+    };
+
+    if (!isValidId(id)) {
+      return res.status(400).json({ error: "Invalid Executive ID" });
+    }
+
+    try {
+      const executiveResult = (
+        await db.query(productCountQuery, [to_date, from_date, id])
+      ).rows;
+      res.status(200).send(executiveResult);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ err: "Internal Server Error" });
+    }
+  }
+);
 export default reportRoutes;

@@ -87,3 +87,68 @@ CREATE TABLE customer_details (
 	customer_address VARCHAR(30),
 	customer_dob DATE
 );
+
+
+sale and inprocess report query  
+SELECT
+    cd.customer_name,
+    sd.second_mob,
+    sd.metal_type,
+    el.executive_name AS executive_name,
+    ael.executive_name AS associate_name,
+    pl.product_name,
+    sd.current_status,
+    sd.non_conversion,
+    sd.remarks,
+    sd.sale_date,
+    NULL::date AS followup_date,
+    sd.end_date,
+    sd.visit_dates,
+    NULL AS process_status 
+FROM
+    public.sales_data sd
+JOIN
+    public.customer_details cd ON sd.customer_id = cd.customer_id
+JOIN
+    public.executive_list el ON sd.executive_id = el.executive_id
+JOIN
+    public.executive_list ael ON sd.associate_id = ael.executive_id
+JOIN
+    public.product_list pl ON sd.product_id = pl.product_id
+WHERE
+    sd.end_date BETWEEN '2024-01-01' AND '2024-02-29'
+	
+UNION ALL
+
+SELECT
+    cd.customer_name,
+    cip.second_mob,
+    cip.metal_type,
+    el.executive_name AS executive_name,
+    ael.executive_name AS associate_name,
+    pl.product_name,
+    cip.current_status,
+    cip.non_conversion,
+    cip.remarks,
+    cip.sale_date,
+    cip.followup_date as next_followup,
+    NULL::date AS end_date,
+    cip.visit_dates,
+    cip.process_status
+FROM
+    public.customer_in_process cip
+JOIN
+    public.customer_details cd ON cip.customer_id = cd.customer_id
+JOIN
+    public.executive_list el ON cip.executive_id = el.executive_id
+JOIN
+    public.executive_list ael ON cip.associate_id = ael.executive_id
+JOIN
+    public.product_list pl ON cip.product_id = pl.product_id
+WHERE
+    cip.sale_date BETWEEN '2024-01-01' AND '2024-02-29'
+    AND cip.followup_date BETWEEN '2024-01-01' AND '2024-02-29'
+    AND cip.process_status = true
+	
+ORDER BY
+    sale_date;
