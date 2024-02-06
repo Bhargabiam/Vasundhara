@@ -12,14 +12,16 @@ CREATE TABLE sales_data (
     walkin_source VARCHAR(30),
     executive_id VARCHAR(30),
     associate_id VARCHAR(30),
-    product_name VARCHAR(30),
+    product_id VARCHAR(30),
     fm_name VARCHAR(30),
     current_status VARCHAR(40),
     non_conversion VARCHAR(40),
     remarks VARCHAR(255),
     sale_date DATE,
     visit_dates VARCHAR(255),
-    end_date DATE
+    end_date DATE,
+    bill_number VARCHAR(50),
+    sales_status boolean DEFAULT true
 );
 
 

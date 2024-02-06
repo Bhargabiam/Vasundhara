@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <%- include('layouts/head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+      <div class="lds-ripple">
+        <div class="lds-pos"></div>
+        <div class="lds-pos"></div>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
+      <header class="topbar"><%- include('layouts/header') %></header>
+      <!-- ============================================================== -->
+      <!-- End Topbar header -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <aside class="left-sidebar"><%- include('layouts/sidebar') %></aside>
+      <!-- ============================================================== -->
+      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper  -->
+      <!-- ============================================================== -->
+      <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="page-breadcrumb">
+          <div class="row">
+            <div class="col-5 align-self-center">
+              <h4 class="page-title">Find Customer</h4>
+            </div>
+            <div class="col-7 align-self-center">
+              <div class="d-flex align-items-center justify-content-end">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="/">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Find Customer
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+          <!-- ============================================================== -->
+          <!-- Start Page Content -->
+          <!-- ============================================================== -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <span class="text-danger">*</span> Marks will be required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============================================================== -->
+          <!-- Cards content -->
+          <!-- ============================================================== -->
+          <div class="row">
+            <!-- Column -->
+            <div class="col-lg-3 col-md-6">
+              <div class="card">
+                <div class="d-flex flex-row">
+                  <div class="p-10 bg-info">
+                    <h3 class="text-white box m-b-0">
+                      <i class="ti-shopping-cart"></i>
+                    </h3>
+                  </div>
+                  <div class="p-10">
+                    <h3 class="text-info m-b-1">Only sales report</h3>
+                    <button
+                      class="btn waves-effect waves-light btn-rounded btn-success float-right"
+                      data-toggle="modal"
+                      data-target="#sale-modal"
+                    >
+                      Get Report
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-lg-3 col-md-6">
+              <div class="card">
+                <div class="d-flex flex-row">
+                  <div class="p-10 bg-success">
+                    <h3 class="text-white box m-b-0">
+                      <i class="ti-list"></i>
+                    </h3>
+                  </div>
+                  <div class="p-10">
+                    <h3 class="text-success m-b-1">Only Inprocess Report</h3>
+                    <button
+                      class="btn waves-effect waves-light btn-rounded btn-success float-right"
+                      data-toggle="modal"
+                      data-target="#inprocess-modal"
+                    >
+                      Get Report
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-lg-3 col-md-6">
+              <div class="card">
+                <div class="d-flex flex-row">
+                  <div class="p-10 bg-cyan">
+                    <h3 class="text-white box m-b-0">
+                      <i class="ti-align-justify"></i>
+                    </h3>
+                  </div>
+                  <div class="p-10">
+                    <h3 class="text-cyan m-b-1">Full Report</h3>
+                    <button
+                      class="btn waves-effect waves-light btn-rounded btn-success float-right"
+                      data-toggle="modal"
+                      data-target="#full-modal"
+                    >
+                      Get Report
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-lg-3 col-md-6">
+              <div class="card">
+                <div class="d-flex flex-row">
+                  <div class="p-10 bg-inverse">
+                    <h3 class="text-white box m-b-0">
+                      <i class="ti-user"></i>
+                    </h3>
+                  </div>
+                  <div class="p-10">
+                    <h3 class="m-b-1">Executive Report</h3>
+                    <button
+                      class="btn waves-effect waves-light btn-rounded btn-success float-right"
+                      data-toggle="modal"
+                      data-target="#executive-modal"
+                    >
+                      Get Report
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-lg-3 col-md-6">
+              <div class="card">
+                <div class="d-flex flex-row">
+                  <div class="p-10 bg-primary">
+                    <h3 class="text-white box m-b-0">
+                      <i class="ti-user"></i>
+                    </h3>
+                  </div>
+                  <div class="p-10">
+                    <h3 class="m-b-1">Customer Profile</h3>
+                    <button
+                      class="btn waves-effect waves-light btn-rounded btn-primary float-right"
+                      data-toggle="modal"
+                      data-target="#customer-modal"
+                    >
+                      Get Report
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Column -->
+          </div>
+
+          <!--=========== Sale Report modal content ==================-->
+          <div
+            id="sale-modal"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="saleModalLabel"
+            aria-hidden="true"
+            style="display: none"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Get Sale Report</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="sale-report">
+                    <div class="form-group">
+                      <label for="to-date" class="control-label"
+                        >To Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="sale-to-date"
+                        name="to-date"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="from-date" class="control-label"
+                        >From Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="sale-from-date"
+                        name="from-date"
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger waves-effect"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    id="sale-btn-submit"
+                    type="button"
+                    class="btn btn-info waves-effect waves-light"
+                  >
+                    Get Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--=========== Inprocess Report modal content ==================-->
+          <div
+            id="inprocess-modal"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="inprocessModalLabel"
+            aria-hidden="true"
+            style="display: none"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Get Inprocess Report</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="to-date" class="control-label"
+                        >To Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="inprocess-to-date"
+                        name="to-date"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="from-date" class="control-label"
+                        >From Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="inprocess-from-date"
+                        name="from-date"
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger waves-effect"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    id="inprocess-btn-submit"
+                    type="button"
+                    class="btn btn-info waves-effect waves-light"
+                  >
+                    Get Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--=========== Full Report modal content ==================-->
+          <div
+            id="full-modal"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="fullModalLabel"
+            aria-hidden="true"
+            style="display: none"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Get Full Report</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="to-date" class="control-label"
+                        >To Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="full-to-date"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="from-date" class="control-label"
+                        >From Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="full-from-date"
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger waves-effect"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    id="full-btn-submit"
+                    type="button"
+                    class="btn btn-info waves-effect waves-light"
+                  >
+                    Get Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--=========== Executive Report modal content ==================-->
+          <div
+            id="executive-modal"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="executiveModalLabel"
+            aria-hidden="true"
+            style="display: none"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Get Executive Report</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="to-date" class="control-label"
+                        >To Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="executive-to-date"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="from-date" class="control-label"
+                        >From Date:</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="executive-from-date"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="executive-name" class="control-label"
+                        >Executive</label
+                      >
+                      <select
+                        class="select2 form-control custom-select"
+                        id="executive-name"
+                        name="executive_name"
+                        required
+                      ></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="inprocess" class="control-label"
+                        >Include Inprocess ->
+                      </label>
+                      <!-- <br /> -->
+                      <input
+                        class="form-group"
+                        type="checkbox"
+                        id="executive-inprocess"
+                        name="inprocess"
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger waves-effect"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    id="executive-btn-submit"
+                    type="button"
+                    class="btn btn-info waves-effect waves-light"
+                  >
+                    Get Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--=========== Customer Report modal content ==================-->
+          <div
+            id="customer-modal"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="customerModalLabel"
+            aria-hidden="true"
+            style="display: none"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Get Customer Profile</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="to-date" class="control-label"
+                        >Mobile No:</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="customer-number"
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger waves-effect"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info waves-effect waves-light"
+                  >
+                    Get Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div col-lg-5 col-sm-12>
+                      <div id="inProcessTableContainer"></div>
+                    </div> -->
+          <!-- ============================================================== -->
+          <!-- End PAge Content -->
+          <!-- ============================================================== -->
+          <!-- ============================================================== -->
+          <!-- Right sidebar -->
+          <!-- ============================================================== -->
+          <!-- .right-sidebar -->
+          <!-- ============================================================== -->
+          <!-- End Right sidebar -->
+          <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+          <%- include('layouts/footer') %>
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Page wrapper  -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- customizer Panel -->
+    <!-- ============================================================== -->
+    <!-- <aside class="customizer"></aside>
+    <div class="chat-windows"></div> -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <%- include('layouts/scriptsLink') %>
+    <script>
+      $(document).ready(() => {
+        axios
+          .get("/executive/getExecutive")
+          .then((response) => {
+            const executiveList = response.data;
+            const $executiveSelect = $("#executive-name");
+
+            executiveList.forEach((executive) => {
+              // Create a new option element for executiveSelect
+              const $executiveOption = $("<option>")
+                .val(executive.executive_id)
+                .text(executive.executive_name);
+
+              $executiveSelect.append($executiveOption);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching executive list:", error);
+          });
+
+        // get sale report
+
+        $("#sale-btn-submit").click(() => {
+          const toDate = $("#sale-to-date").val();
+          const fromDate = $("#sale-from-date").val();
+          axios
+            .get(`/report/saleReport/${toDate}/${fromDate}`)
+            .then((response) => {
+              const saleData = response.data;
+              $("#sale-modal").modal("hide");
+              renderSaleReportPage(saleData);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        });
+
+        // get Inprocess report
+
+        $("#inprocess-btn-submit").click(() => {
+          const toDate = $("#inprocess-to-date").val();
+          const fromDate = $("#inprocess-from-date").val();
+          axios
+            .get(`/report/inprocessReport/${toDate}/${fromDate}`)
+            .then((response) => {
+              const inprocessData = response.data;
+              $("#inprocess-modal").modal("hide");
+              renderSaleReportPage(inprocessData);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        });
+
+        // get Full report
+
+        $("#full-btn-submit").click(() => {
+          const toDate = $("#full-to-date").val();
+          const fromDate = $("#full-from-date").val();
+          axios
+            .get(`/report/fullReport/${toDate}/${fromDate}`)
+            .then((response) => {
+              const fullData = response.data;
+              $("#full-modal").modal("hide");
+              renderSaleReportPage(fullData);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        });
+
+        // get Executive Report
+
+        $("#executive-btn-submit").click(() => {
+          const toDate = $("#executive-to-date").val();
+          const fromDate = $("#executive-from-date").val();
+          const executiveId = $("#executive-name").val();
+          const isInprocess = $("#executive-inprocess").prop("checked");
+          if (isInprocess) {
+            axios
+              .get(
+                `/report/executiveFullReport/${executiveId}/${toDate}/${fromDate}`
+              )
+              .then((response) => {
+                const fullData = response.data;
+                $("#executive-modal").modal("hide");
+                renderSaleReportPage(fullData);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          } else {
+            axios
+              .get(
+                `/report/executiveReport/${executiveId}/${toDate}/${fromDate}`
+              )
+              .then((response) => {
+                const salesData = response.data;
+                $("#executive-modal").modal("hide");
+                renderSaleReportPage(salesData);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          }
+        });
+
+        function renderSaleReportPage(saleData) {
+          // Create a form element dynamically
+          const form = document.createElement("form");
+          form.method = "POST"; // Use POST method
+          form.action = "/table/saleReport"; // Set the action attribute to your desired route
+
+          // Create an input element for saleData
+          const input = document.createElement("input");
+          input.type = "hidden"; // Hidden input
+          input.name = "data"; // Set the name attribute
+          input.value = JSON.stringify(saleData); // Set the value to the stringified saleData
+
+          // Append the input element to the form
+          form.appendChild(input);
+
+          // Append the form to the document body
+          document.body.appendChild(form);
+
+          // Submit the form
+          form.submit();
+        }
+      });
+    </script>
+  </body>
+</html>

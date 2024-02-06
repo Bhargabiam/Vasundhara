@@ -26,11 +26,12 @@ salesRoutes.post("/saleData/:customer_id", async (req, res) => {
     non_conversion,
     remarks,
     sale_date,
+    bill_number,
   } = req.body;
   const customer_id = req.params.customer_id;
   try {
     const addToInprocessQuery =
-      "INSERT INTO sales_data (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, visit_dates, end_date) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15);";
+      "INSERT INTO sales_data (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, visit_dates, end_date, bill_number) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16);";
     await db.query(addToInprocessQuery, [
       customer_id,
       sec_mobile,
@@ -47,6 +48,7 @@ salesRoutes.post("/saleData/:customer_id", async (req, res) => {
       sale_date,
       sale_date,
       sale_date,
+      bill_number,
     ]);
     res.status(200).send("Successfully Submited");
   } catch (err) {
@@ -72,6 +74,7 @@ salesRoutes.post("/processToSale/:processId", async (req, res) => {
     remarks,
     sale_date,
     follwup_date,
+    bill_number,
   } = req.body;
   let visitDates = `${sale_date} - Prev. Visit date- `;
   let customerId = "";
@@ -81,7 +84,7 @@ salesRoutes.post("/processToSale/:processId", async (req, res) => {
   const getInprocessDataQuery =
     "SELECT customer_id, customer_type, walkin_source, sale_date, visit_dates FROM customer_in_process WHERE process_id = $1";
   const addSaleDataQuery =
-    "INSERT INTO sales_data (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, visit_dates, end_date) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15);";
+    "INSERT INTO sales_data (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, visit_dates, end_date, bill_number) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16);";
   try {
     const inprocessData = (await db.query(getInprocessDataQuery, [processId]))
       .rows[0];
@@ -107,6 +110,7 @@ salesRoutes.post("/processToSale/:processId", async (req, res) => {
       saleDate,
       visitDates,
       sale_date,
+      bill_number,
     ]);
     res.status(200).send({ message: "Data Submitted successfully." });
   } catch (err) {

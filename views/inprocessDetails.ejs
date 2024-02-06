@@ -382,6 +382,29 @@
                           />
                         </div>
                       </div>
+                      <!-- Billed number -->
+                      <div
+                        id="bill-number-div"
+                        style="display: none"
+                        class="col-sm-12 col-md-3 col-lg-2"
+                      >
+                        <div class="form-group">
+                          <label
+                            for="bill-number"
+                            class="control-label col-form-label"
+                            >Billed Number<span class="text-danger"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="bill-number"
+                            name="bill_number"
+                            placeholder="Bill Number"
+                          />
+                        </div>
+                      </div>
                       <div class="col-sm-12 col-md-3 col-lg-2">
                         <div class="form-group">
                           <label
@@ -508,6 +531,7 @@
         const remarksInput = document.getElementById("remarks");
         // const dateInput = document.getElementById("sale-date");
         const followupDateInput = document.getElementById("follwup-date");
+        const billNumberInput = document.getElementById("bill-number");
         const inprocessInput = document.getElementById("inprocess");
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -527,12 +551,18 @@
         function updateDateField() {
           if (inprocessInput.checked) {
             followupDateInput.required = true;
+            billNumberInput.required = false;
             window.document.getElementById("followupDateDiv").style.display =
               "block";
+            window.document.getElementById("bill-number-div").style.display =
+              "none";
           } else {
             followupDateInput.required = false;
+            billNumberInput.required = true;
             window.document.getElementById("followupDateDiv").style.display =
               "none";
+            window.document.getElementById("bill-number-div").style.display =
+              "block";
           }
         }
 

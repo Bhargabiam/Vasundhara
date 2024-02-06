@@ -378,14 +378,30 @@
                             id="follwup-date"
                             name="follwup_date"
                             placeholder="Select Date"
-                            name="follwup-date"
                           />
-                          <div
-                            id="validationServer05Feedback"
-                            class="invalid-feedback"
+                        </div>
+                      </div>
+                      <!-- Billed number -->
+                      <div
+                        id="bill-number-div"
+                        style="display: none"
+                        class="col-sm-12 col-md-3 col-lg-2"
+                      >
+                        <div class="form-group">
+                          <label
+                            for="bill-number"
+                            class="control-label col-form-label"
+                            >Billed Number<span class="text-danger"
+                              >*</span
+                            ></label
                           >
-                            Please provide a valid zip.
-                          </div>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="bill-number"
+                            name="bill_number"
+                            placeholder="Bill Number"
+                          />
                         </div>
                       </div>
                       <div class="col-sm-12 col-md-3 col-lg-2">
@@ -513,6 +529,7 @@
         const customerId = urlParams.get("customer_id");
         const followupDateInput = document.getElementById("follwup-date");
         const inprocessInput = document.getElementById("inprocess");
+        const billNumberInput = document.getElementById("bill-number");
 
         updateDateField();
 
@@ -522,12 +539,18 @@
         function updateDateField() {
           if (inprocessInput.checked) {
             followupDateInput.required = true;
+            billNumberInput.required = false;
             window.document.getElementById("followupDateDiv").style.display =
               "block";
+            window.document.getElementById("bill-number-div").style.display =
+              "none";
           } else {
             followupDateInput.required = false;
+            billNumberInput.required = true;
             window.document.getElementById("followupDateDiv").style.display =
               "none";
+            window.document.getElementById("bill-number-div").style.display =
+              "block";
           }
         }
 
