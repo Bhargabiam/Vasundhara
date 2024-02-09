@@ -169,117 +169,100 @@ reportRoutes.get(
   }
 );
 
-// From sales table count Happy statust with date parameter;
-reportRoutes.get("/statusCount/:type/:to_date/:from_date", async (req, res) => {
-  const { type, to_date, from_date } = req.params;
-  const statusCountQuery =
-    "SELECT COUNT(current_status) FROM sales_data WHERE end_date BETWEEN $1 AND $2 AND current_status = $3;";
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+// ===========================FOR DASHBORD DATAs=====================================//
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
-  const isValidDate = (dateString) => {
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
-    return regex.test(dateString);
-  };
-
-  if (!isValidDate(to_date) || !isValidDate(from_date)) {
-    return res.status(400).json({ error: "Invalid date format" });
-  }
-
+// Count Total Customer in DataBase
+reportRoutes.get("/totalClient", async (req, res) => {
+  const totalClientQuery = "SELECT COUNT(customer_id) FROM customer_details;";
   try {
-    const statusCountReport = (
-      await db.query(statusCountQuery, [to_date, from_date, type])
-    ).rows[0];
-    res.status(200).send({ count: statusCountReport.count });
+    const totalClient = (await db.query(totalClientQuery)).rows[0].count;
+    if (totalClient == 0) {
+      res.status(404).send({ err: "No Data Found For Clint Count" });
+    } else {
+      res.status(200).send(totalClient);
+    }
   } catch (err) {
-    console.error(err);
     res.status(500).send({ err: "Internal Server Error" });
   }
 });
 
-// Count total number of inprocess query depend on dates
-
-reportRoutes.get("/inProcessCount/:to_date/:from_date", async (req, res) => {
-  const { to_date, from_date } = req.params;
-  const countInprocessQuery =
-    "SELECT COUNT(process_id) FROM customer_in_process WHERE followup_date BETWEEN $1 AND $2 AND process_status = true";
-
-  const isValidDate = (dateString) => {
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
-    return regex.test(dateString);
-  };
-
-  if (!isValidDate(to_date) || !isValidDate(from_date)) {
-    return res.status(400).json({ error: "Invalid date format" });
-  }
-
+// Count Total Active Inprocess
+reportRoutes.get("/totalActiveQuery", async (req, res) => {
+  const totalActiveQuery =
+    "SELECT COUNT(process_id) FROM customer_in_process WHERE process_status = true;";
   try {
-    const countResult = (
-      await db.query(countInprocessQuery, [to_date, from_date])
-    ).rows[0];
-    res.status(200).send({ count: countResult.count });
+    const activeQuery = (await db.query(totalActiveQuery)).rows[0].count;
+    if (activeQuery == 0) {
+      res.status(404).send({ err: "No Data Found For Active Query" });
+    } else {
+      res.status(200).send(activeQuery);
+    }
   } catch (err) {
-    console.error(err);
     res.status(500).send({ err: "Internal Server Error" });
   }
 });
 
-// Count total number of inprocess query depend on dates
-
-reportRoutes.get("/saleCount/:to_date/:from_date", async (req, res) => {
-  const { to_date, from_date } = req.params;
-  const countSalesQuery =
-    "SELECT COUNT(sales_id) FROM sales_data WHERE end_date BETWEEN $1 AND $2 AND sales_status = true";
-
-  const isValidDate = (dateString) => {
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
-    return regex.test(dateString);
-  };
-
-  if (!isValidDate(to_date) || !isValidDate(from_date)) {
-    return res.status(400).json({ error: "Invalid date format" });
-  }
-
+// Count Total Close Inprocess Between TWo Dates
+reportRoutes.get("/totalCloseQuery/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
+  const totalcloseQuery =
+    "SELECT COUNT(process_id) FROM customer_in_process WHERE process_status = false AND folloWup_date BETWEEN $1 AND $2;";
   try {
-    const countResult = (await db.query(countSalesQuery, [to_date, from_date]))
-      .rows[0];
-    res.status(200).send({ count: countResult.count });
+    const closeQuery = (await db.query(totalcloseQuery, [to, from])).rows[0]
+      .count;
+    if (closeQuery == 0) {
+      res.status(404).send({ err: "No Data Found For close Query" });
+    } else {
+      res.status(200).send(closeQuery);
+    }
   } catch (err) {
-    console.error(err);
     res.status(500).send({ err: "Internal Server Error" });
   }
 });
 
-// Product Wish count From Sales_data table depending on date and product_id;
-
-reportRoutes.get("/productCount/:id/:to_date/:from_date", async (req, res) => {
-  const { id, to_date, from_date } = req.params;
-  const productCountQuery =
-    "SELECT COUNT(sales_id) FROM sales_data WHERE end_date BETWEEN $1 AND $2 AND product_id = $3 AND sales_status = true";
-
-  const isValidDate = (dateString) => {
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
-    return regex.test(dateString);
-  };
-
-  if (!isValidDate(to_date) || !isValidDate(from_date)) {
-    return res.status(400).json({ error: "Invalid date format" });
+// Count Total Sale Between TWo Dates
+reportRoutes.get("/totalSale/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
+  const totalSaleQuery =
+    "SELECT COUNT(sales_id) FROM sales_data WHERE sales_status = true AND end_date BETWEEN $1 AND $2;";
+  try {
+    const saleCount = (await db.query(totalSaleQuery, [to, from])).rows[0]
+      .count;
+    if (saleCount == 0) {
+      res.status(404).send({ err: "No Data Found For close Query" });
+    } else {
+      res.status(200).send(saleCount);
+    }
+  } catch (err) {
+    res.status(500).send({ err: "Internal Server Error" });
   }
+});
 
-  const isValidId = (iDString) => {
-    const regex = /^PROD_\d{6}_\d{4}$/;
-    return regex.test(iDString);
-  };
-
-  if (!isValidId(id)) {
-    return res.status(400).json({ error: "Invalid Product ID" });
+// get Status count from sales Table
+reportRoutes.get("/statusCount/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
+  const statusCountQuery = `SELECT COUNT(*) FILTER (WHERE current_status = 'Happy') AS "Happy",COUNT(*) FILTER (WHERE current_status = 'UnHappy') AS "UnHappy",COUNT(*) FILTER (WHERE current_status = 'Service/Repair') AS "Service",COUNT(*) FILTER (WHERE current_status = 'order') AS "Casual" FROM sales_data WHERE sales_status = true AND end_date BETWEEN $1 AND $2;`;
+  try {
+    const statusCount = (await db.query(statusCountQuery, [to, from])).rows[0];
+    res.status(200).send(statusCount);
+  } catch (err) {
+    res.status(500).send({ err: "Internal Server Error" });
   }
+});
+
+// get sales id count group by each day from sales data
+
+reportRoutes.get("/salesCount/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
+  const salesCountQuery = `SELECT To_CHAR((end_date), 'YYYY-MM-DD') AS day, COUNT(sales_id) AS count FROM sales_data WHERE sales_status = true AND end_date BETWEEN $1 AND $2 GROUP BY DATE(end_date) ORDER BY DATE(end_date);`;
 
   try {
-    const countResult = (
-      await db.query(productCountQuery, [to_date, from_date, id])
-    ).rows[0];
-    res.status(200).send({ count: countResult.count });
+    const salesCount = (await db.query(salesCountQuery, [to, from])).rows;
+    res.status(200).send(salesCount);
   } catch (err) {
-    console.error(err);
     res.status(500).send({ err: "Internal Server Error" });
   }
 });

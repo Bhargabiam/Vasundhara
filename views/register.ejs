@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html dir="ltr">
+  <head>
+    <%- include('layouts/head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- ============================================================== -->
+      <!-- Preloader - style you can find in spinners.css -->
+      <!-- ============================================================== -->
+      <div class="preloader">
+        <div class="lds-ripple">
+          <div class="lds-pos"></div>
+          <div class="lds-pos"></div>
+        </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- Preloader - style you can find in spinners.css -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Login box.scss -->
+      <!-- ============================================================== -->
+      <div
+        class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+        style="
+          background: url(/static/assets/images/big/auth-bg.jpg) no-repeat
+            center center;
+        "
+      >
+        <div class="auth-box">
+          <div>
+            <div class="logo">
+              <span class="db"
+                ><img src="/static/assets/images/favicon.png" alt="logo"
+              /></span>
+              <h5 class="font-medium m-b-20">Sign Up to Admin</h5>
+            </div>
+            <!-- Form -->
+            <div class="row">
+              <div class="col-12">
+                <form id="register" class="form-horizontal m-t-20" action="">
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        id="userName"
+                        class="form-control form-control-lg"
+                        type="text"
+                        required=" "
+                        placeholder="Name"
+                        name="username"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        id="email"
+                        class="form-control form-control-lg"
+                        type="text"
+                        required=" "
+                        placeholder="Email"
+                        name="email"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <select
+                        id="role"
+                        class="form-control form-control-lg"
+                        required=" "
+                        placeholder="Role"
+                        name="role"
+                      >
+                        <option selected value="admin">Admin</option>
+                        <option value="manegment">Manegment</option>
+                        <option value="cre">C.R.E</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        id="password"
+                        class="form-control form-control-lg"
+                        type="password"
+                        required=" "
+                        placeholder="Password"
+                        name="password"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        id="confirmPassword"
+                        class="form-control form-control-lg"
+                        type="password"
+                        required=" "
+                        placeholder="Confirm Password"
+                        name="confirm_password"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <div class="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="customCheck1"
+                        />
+                        <label class="custom-control-label" for="customCheck1"
+                          >I agree to all
+                          <a href="javascript:void(0)">Terms</a></label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group text-center">
+                    <div class="col-xs-12 p-b-20">
+                      <button
+                        class="btn btn-block btn-lg btn-info"
+                        type="submit "
+                      >
+                        SIGN UP
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group m-b-0 m-t-10">
+                    <div class="col-sm-12 text-center">
+                      Already have an account?
+                      <a
+                        href="authentication-login1.html "
+                        class="text-info m-l-5"
+                        ><b>Sign In</b></a
+                      >
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- Login box.scss -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper scss in scafholding.scss -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper scss in scafholding.scss -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Right Sidebar -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Right Sidebar -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- All Required js -->
+    <!-- ============================================================== -->
+    <script src="/static/assets/libs/jquery/dist/jquery.min.js "></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/static/assets/libs/popper.js/dist/umd/popper.min.js "></script>
+    <script src="/static/assets/libs/bootstrap/dist/js/bootstrap.min.js "></script>
+    <!-- ============================================================== -->
+    <!-- This page plugin js -->
+    <!-- ============================================================== -->
+    <script>
+      $('[data-toggle="tooltip "]').tooltip();
+      $(".preloader ").fadeOut();
+
+      $(document).ready(function () {
+        $("#register").submit(function (event) {
+          event.preventDefault();
+          const formData = {
+            username: $("#userName").val(),
+            email: $("#email").val(),
+            role: $("#role").val(),
+            password: $("#password").val(),
+          };
+
+          // Send POST request using Axios
+          axios
+            .post("/table/register", formData)
+            .then(function (response) {
+              console.log("Data submitted successfully:", response.data);
+              // Handle success, such as showing a success message to the user
+            })
+            .catch(function (error) {
+              console.error("Error submitting data:", error);
+              // Handle error, such as showing an error message to the user
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

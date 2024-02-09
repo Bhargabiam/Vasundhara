@@ -6,6 +6,7 @@ import executiveRoutes from "./executiveRoutes.js";
 import productRoutes from "./productRoutes.js";
 import reportRoutes from "./reportRoutes.js";
 import tableRoutes from "./tableRoutes.js";
+import dashboardRoutes from "./dashboardRoutes.js";
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use("/executive", executiveRoutes);
 router.use("/product", productRoutes);
 router.use("/report", reportRoutes);
 router.use("/table", tableRoutes);
+router.use("/index", dashboardRoutes);
 
 export default router;

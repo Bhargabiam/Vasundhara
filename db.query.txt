@@ -91,6 +91,22 @@ CREATE TABLE customer_details (
 );
 
 
+CREATE TABLE user_list (
+    user_id VARCHAR(20) PRIMARY KEY DEFAULT (
+        'USER_' || 
+        to_char(current_timestamp, 'YYMMDDHH24MI') || 
+        '_' || 
+        LPAD(FLOOR(random() * 10000)::TEXT, 4, '0')
+    ),
+    user_name VARCHAR(20),
+    email VARCHAR(50) UNIQUE,
+    password VARCHAR(200),
+    roll VARCHAR(20),
+    create_date DATE DEFAULT CURRENT_DATE,
+    user_status BOOLEAN DEFAULT true
+);
+
+
 sale and inprocess report query  
 SELECT
     cd.customer_name,
