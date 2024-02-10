@@ -3,12 +3,9 @@
   <head>
     <%- include('layouts/head') %>
     <!-- This page plugin CSS -->
-    <link
-      href="/static/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="/static/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
 
   <body>
@@ -196,6 +193,8 @@
     <!-- All Jquery -->
     <!-- ============================================================== -->
     <%- include('layouts/scriptsLink') %>
+    <!--This page plugins -->
+    <script src="/static/assets/extra-libs/DataTables/datatables.min.js"></script>
     <!-- start - This is for export functionality only -->
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
@@ -205,6 +204,56 @@
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
     <script src="/static/dist/js/pages/datatable/datatable-advanced.init.js"></script>
-    <script></script>
+    <!-- <script>
+      $(document).ready(function() {
+        // Data provided from the server
+    var saleData = JSON.parse(`<%- data %>`);
+    var currentPage = 1;
+    var pageSize = 10; // Number of rows per page
+
+    // Function to populate the table with data for the current page
+    function populateTable(page) {
+        $('#tableBody').empty(); // Clear the existing table body
+        var startIndex = (page - 1) * pageSize;
+        var endIndex = startIndex + pageSize;
+        var tableRows = '';
+        for (var i = startIndex; i < endIndex && i < saleData.length; i++) {
+            var row = saleData[i];
+            var tableRow = '<tr>';
+            Object.keys(row).forEach(function(key) {
+                if (key === 'Last Status') {
+                    if (row[key] === null) {
+                        tableRow += '<td><span class="label label-success label-rounded">Complete</span></td>';
+                    } else if (row[key] === true) {
+                        tableRow += '<td><span class="label label-rounded label-primary">Inprocess</span></td>';
+                    }
+                } else {
+                    tableRow += '<td>' + row[key] + '</td>';
+                }
+            });
+            tableRow += '</tr>';
+            tableRows += tableRow;
+        }
+        $('#tableBody').append(tableRows);
+    }
+
+    // Initial table population
+    populateTable(currentPage);
+
+    // Event handler for next page button
+    $('#nextPageButton').on('click', function() {
+        currentPage++;
+        populateTable(currentPage);
+    });
+
+    // Event handler for previous page button
+    $('#prevPageButton').on('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            populateTable(currentPage);
+        }
+    });
+});
+    </script> -->
   </body>
 </html>

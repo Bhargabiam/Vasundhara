@@ -15,7 +15,6 @@ $("#file_export").DataTable({
 $(
   ".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel"
 ).addClass("btn btn-primary mr-1");
-
 // $("#file_export").DataTable({
 //   columnDefs: [
 //     {
