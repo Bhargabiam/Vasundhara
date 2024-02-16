@@ -40,7 +40,25 @@
             <!-- Form -->
             <div class="row">
               <div class="col-12">
-                <form id="register" class="form-horizontal m-t-20" action="">
+                <div
+                  id="errorBox"
+                  class="alert alert-danger"
+                  style="display: none"
+                >
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h3 class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> Warning
+                  </h3>
+                  <p id="errorMessage">Please try again.</p>
+                </div>
+                <form id="register" class="form-horizontal m-t-20">
                   <div class="form-group row">
                     <div class="col-12">
                       <input
@@ -49,7 +67,7 @@
                         type="text"
                         required=" "
                         placeholder="Name"
-                        name="username"
+                        name="name"
                       />
                     </div>
                   </div>
@@ -61,7 +79,7 @@
                         type="text"
                         required=" "
                         placeholder="Email"
-                        name="email"
+                        name="username"
                       />
                     </div>
                   </div>
@@ -74,7 +92,8 @@
                         placeholder="Role"
                         name="role"
                       >
-                        <option selected value="admin">Admin</option>
+                        <option selected disabled value="">Select Role</option>
+                        <option value="admin">Admin</option>
                         <option value="manegment">Manegment</option>
                         <option value="cre">C.R.E</option>
                       </select>
@@ -90,6 +109,13 @@
                         placeholder="Password"
                         name="password"
                       />
+                      <div
+                        id="wrong-password"
+                        class="invalid-feedback"
+                        style="display: none"
+                      >
+                        Password Not matched.
+                      </div>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -102,20 +128,12 @@
                         placeholder="Confirm Password"
                         name="confirm_password"
                       />
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="customCheck1"
-                        />
-                        <label class="custom-control-label" for="customCheck1"
-                          >I agree to all
-                          <a href="javascript:void(0)">Terms</a></label
-                        >
+                      <div
+                        id="confirm-password"
+                        class="invalid-feedback animated flash"
+                        style="display: none"
+                      >
+                        Confirm password not match.
                       </div>
                     </div>
                   </div>
@@ -178,24 +196,52 @@
       $(document).ready(function () {
         $("#register").submit(function (event) {
           event.preventDefault();
-          const formData = {
-            username: $("#userName").val(),
-            email: $("#email").val(),
-            role: $("#role").val(),
-            password: $("#password").val(),
-          };
+          if ($("#password").val() !== $("#confirmPassword").val()) {
+            $("#confirm-password").show();
+            return;
+          } else {
+            const formData = {
+              name: $("#userName").val(),
+              username: $("#email").val(),
+              role: $("#role").val(),
+              password: $("#password").val(),
+            };
 
-          // Send POST request using Axios
-          axios
-            .post("/table/register", formData)
-            .then(function (response) {
-              console.log("Data submitted successfully:", response.data);
-              // Handle success, such as showing a success message to the user
-            })
-            .catch(function (error) {
-              console.error("Error submitting data:", error);
-              // Handle error, such as showing an error message to the user
-            });
+            // Send POST request using Axios
+            axios
+              .post("/auth/register", formData)
+              .then(function (res) {
+                if (res.status === 200) {
+                  window.location.href = "/index/dashboard";
+                } else {
+                  $("#errorMessage").html(
+                    "Something went wrong, please try again later"
+                  );
+                  $("#errorBox").show();
+                }
+                // Handle success, such as showing a success message to the user
+              })
+              .catch(function (error) {
+                if (error.response.status === 409) {
+                  $("#errorMessage").html(
+                    "Email is already registered. Please Sign in"
+                  );
+                  $("#errorBox").show();
+                }
+                if (error.response.status === 500) {
+                  $("#errorMessage").html(
+                    "Something went wrong, please try again later"
+                  );
+                  $("#errorBox").show();
+                } else {
+                  $("#errorMessage").html(
+                    "Internal Server Error, please try again later"
+                  );
+                  $("#errorBox").show();
+                }
+                // Handle error, such as showing an error message to the user
+              });
+          }
         });
       });
     </script>

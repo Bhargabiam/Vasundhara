@@ -4,7 +4,19 @@ import db from "../services/db.js";
 const dashboardRoutes = express.Router();
 
 dashboardRoutes.get("/dashBoard", (req, res) => {
-  res.render("index");
+  if (req.isAuthenticated()) {
+    res.render("index");
+  } else {
+    res.redirect("/auth/login");
+  }
+});
+
+dashboardRoutes.get("/userProfile", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("userProfile");
+  } else {
+    res.redirect("/auth/login");
+  }
 });
 
 export default dashboardRoutes;

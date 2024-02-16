@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <%- include('layouts/head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+      <div class="lds-ripple">
+        <div class="lds-pos"></div>
+        <div class="lds-pos"></div>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
+      <header class="topbar"><%- include('layouts/header') %></header>
+      <!-- ============================================================== -->
+      <!-- End Topbar header -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <aside class="left-sidebar"><%- include('layouts/sidebar') %></aside>
+      <!-- ============================================================== -->
+      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper  -->
+      <!-- ============================================================== -->
+      <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="page-breadcrumb">
+          <div class="row">
+            <div class="col-5 align-self-center">
+              <h4 class="page-title">Profile</h4>
+            </div>
+            <div class="col-7 align-self-center">
+              <div class="d-flex align-items-center justify-content-end">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="#">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Profile
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+          <!-- ============================================================== -->
+          <!-- Start Page Content -->
+          <!-- ============================================================== -->
+          <!-- Row -->
+          <div class="row">
+            <!-- Column -->
+            <div class="col-md-5 m-auto">
+              <div class="card">
+                <div class="card-body">
+                  <center class="m-t-30">
+                    <img
+                      src="/static/assets/images/users/5.jpg"
+                      class="rounded-circle"
+                      width="150"
+                    />
+                    <h4 id="FullName" class="card-title m-t-10"></h4>
+                    <h6 id="userRoll" class="card-subtitle"></h6>
+                    <a
+                      data-toggle="modal"
+                      data-target="#passwordModal"
+                      class="btn btn-sm btn-danger btn-rounded text-white"
+                      >Reset Password</a
+                    >
+                  </center>
+                </div>
+                <div>
+                  <hr />
+                </div>
+                <div class="card-body">
+                  <small class="text-muted">Email address </small>
+                  <h6 id="email"></h6>
+                  <small class="text-muted p-t-30 db">User Id</small>
+                  <h6 id="userId"></h6>
+                  <small class="text-muted p-t-30 db">Create Date</small>
+                  <h6 id="createDate"></h6>
+
+                  <div
+                    id="passwordModal"
+                    class="modal fade"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="passwordModalLabel"
+                    aria-hidden="true"
+                    style="display: none"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Change Password</h4>
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-hidden="true"
+                          >
+                            ×
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form id="sale-report">
+                            <div class="form-group">
+                              <label for="old-password" class="control-label"
+                                >Password:</label
+                              >
+                              <input
+                                type="password"
+                                class="form-control"
+                                id="old-password"
+                                placeholder="Current Password"
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="new-password" class="control-label"
+                                >New Password:</label
+                              >
+                              <input
+                                type="password"
+                                class="form-control"
+                                id="new-password"
+                                placeholder="New Password"
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label
+                                for="confirm-password"
+                                class="control-label"
+                                >Confirm Password:</label
+                              >
+                              <input
+                                type="password"
+                                class="form-control"
+                                id="confirm-password"
+                                placeholder="Confirm Password"
+                              />
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-danger waves-effect"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button
+                            id="password-btn-submit"
+                            type="button"
+                            class="btn btn-info waves-effect waves-light"
+                          >
+                            Change Password
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="map-box">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508"
+                      width="100%"
+                      height="150"
+                      frameborder="0"
+                      style="border: 0"
+                      allowfullscreen
+                    ></iframe>
+                  </div> -->
+                  <!-- <small class="text-muted p-t-30 db">Social Profile</small>
+                  <br />
+                  <button class="btn btn-circle btn-secondary">
+                    <i class="fab fa-facebook-f"></i>
+                  </button>
+                  <button class="btn btn-circle btn-secondary">
+                    <i class="fab fa-twitter"></i>
+                  </button>
+                  <button class="btn btn-circle btn-secondary">
+                    <i class="fab fa-youtube"></i>
+                  </button> -->
+                </div>
+              </div>
+            </div>
+            <!-- Column -->
+          </div>
+          <!-- Row -->
+          <!-- ============================================================== -->
+          <!-- End PAge Content -->
+          <!-- ============================================================== -->
+          <!-- ============================================================== -->
+          <!-- Right sidebar -->
+          <!-- ============================================================== -->
+          <!-- .right-sidebar -->
+          <!-- ============================================================== -->
+          <!-- End Right sidebar -->
+          <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+          <%- include('layouts/footer') %>
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Page wrapper  -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- customizer Panel -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <%- include('layouts/scriptsLink') %>
+    <script src="/static/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="/static/assets/libs/sweetalert2/sweet-alert.init.js"></script>
+    <script>
+      $(document).ready(() => {
+        let user_id = "";
+        axios
+          .get("/auth/user")
+          .then(function (res) {
+            $("#FullName").html(res.data.user_name);
+            $("#userRoll").html(res.data.roll);
+            $("#email").html(res.data.email);
+            $("#userId").html(res.data.user_id);
+            user_id = res.data.user_id;
+            $("#createDate").html(res.data.create_date);
+          })
+          .catch(function (error) {
+            console.error(error.message);
+          });
+
+        $("#password-btn-submit").click(() => {
+          const formData = {
+            userID: user_id,
+            newPassword: $("#new-password").val(),
+          };
+          axios
+            .post("/auth/changePassword", formData)
+            .then(function (res) {
+              if (res.status === 200) {
+                swal(
+                  "Password Changed!",
+                  "Your password has been changed successfully.",
+                  "success"
+                );
+                $("#passwordModal").modal("hide");
+              }
+            })
+            .catch(function (error) {
+              console.error(error.message);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

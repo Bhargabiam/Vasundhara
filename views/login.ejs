@@ -39,12 +39,26 @@
             </div>
             <!-- Form -->
             <div class="row">
-              <div class="col-12">
-                <form
-                  class="form-horizontal m-t-20"
-                  id="loginform"
-                  action="index.html"
+              <div
+                id="wrongAll"
+                class="alert alert-danger"
+                style="display: none"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
                 >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="text-danger">
+                  <i class="fa fa-exclamation-triangle"></i> Warning
+                </h3>
+                Incorrect username or password entered. Please try again.
+              </div>
+              <div class="col-12">
+                <form class="form-horizontal m-t-20" id="loginform">
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="basic-addon1"
@@ -58,7 +72,8 @@
                       placeholder="Email"
                       aria-label="Email"
                       aria-describedby="basic-addon1"
-                      name="email"
+                      name="username"
+                      required
                     />
                   </div>
                   <div class="input-group mb-3">
@@ -69,13 +84,21 @@
                     </div>
                     <input
                       id="password"
-                      type="text"
+                      type="password"
                       class="form-control form-control-lg"
                       placeholder="Password"
                       aria-label="Password"
                       aria-describedby="basic-addon1"
                       name="password"
+                      required
                     />
+                  </div>
+                  <div
+                    id="wrong-password"
+                    class="invalid-feedback"
+                    style="display: none"
+                  >
+                    Incorrect Password.
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
@@ -114,21 +137,12 @@
                       <div class="social">
                         <a
                           href="javascript:void(0)"
-                          class="btn btn-facebook"
-                          data-toggle="tooltip"
-                          title=""
-                          data-original-title="Login with Facebook"
-                        >
-                          <i aria-hidden="true" class="fab fa-facebook"></i>
-                        </a>
-                        <a
-                          href="javascript:void(0)"
                           class="btn btn-googleplus"
                           data-toggle="tooltip"
                           title=""
                           data-original-title="Login with Google"
                         >
-                          <i aria-hidden="true" class="fab fa-google-plus"></i>
+                          <i aria-hidden="true" class="fab fab fa-google"></i>
                         </a>
                       </div>
                     </div>
@@ -136,9 +150,7 @@
                   <div class="form-group m-b-0 m-t-10">
                     <div class="col-sm-12 text-center">
                       Don't have an account?
-                      <a
-                        href="authentication-register1.html"
-                        class="text-info m-l-5"
+                      <a href="/auth/register" class="text-info m-l-5"
                         ><b>Sign Up</b></a
                       >
                     </div>
@@ -229,19 +241,21 @@
         $("#loginform").submit((event) => {
           event.preventDefault();
           const formData = {
-            email: $("#email").val(),
+            username: $("#email").val(),
             password: $("#password").val(),
           };
 
           axios
-            .post("/table/login", formData)
-            .then(function (response) {
-              window.location(response.data);
-              // Handle success, such as showing a success message to the user
+            .post("/auth/login", formData)
+            .then(function (res) {
+              if (res.status === 200) {
+                window.location.href = "/index/dashboard";
+              }
             })
             .catch(function (error) {
-              console.error("Error submitting data:", error);
-              // Handle error, such as showing an error message to the user
+              if (error.response.status === 401) $("#wrong-password").show();
+              if (error.response.status === 500) $("#wrongAll").show();
+              else console.error(error.message);
             });
         });
       });

@@ -112,13 +112,11 @@
                             type="text"
                             class="form-control"
                             id="customer_mobile"
-                            name="customer_mobile"
                             placeholder="Contact No Here"
-                            value=""
+                            required
                           />
-                          <div class="valid-feedback">Looks good!</div>
-                          <div class="invalid-feedback">
-                            Please Enter Contact number.
+                          <div id="wrong-mobile" class="invalid-feedback">
+                            Enter Valid 10 Digit Number.
                           </div>
                         </div>
                       </div>
@@ -138,11 +136,12 @@
                             type="text"
                             class="form-control"
                             id="customer_name"
-                            name="customer_name"
                             placeholder="Full Name Here"
+                            required
                           />
-                          <div class="valid-feedback">Looks good!</div>
-                          <div class="invalid-feedback">Please Enter Name.</div>
+                          <div id="wrong-name" class="invalid-feedback">
+                            Enter Valid Name.
+                          </div>
                         </div>
                       </div>
 
@@ -161,9 +160,11 @@
                             type="email"
                             class="form-control"
                             id="customer_email"
-                            name="customer_email"
                             placeholder="Email Here"
                           />
+                          <div id="wrong-email" class="invalid-feedback">
+                            Enter Valid Email ID.
+                          </div>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -181,30 +182,13 @@
                             type="text"
                             class="form-control"
                             id="customer_address"
-                            name="customer_address"
                             placeholder="City/State Here"
                           />
-                        </div>
-                      </div>
-                      <!-- <div class="form-group row">
-                        <div class="col-sm-3">
-                          <div class="b-label">
-                            <label
-                              for="inputEmail3"
-                              class="control-label col-form-label"
-                              >Country:</label
-                            >
+                          <div id="wrong-address" class="invalid-feedback">
+                            Enter Valid Address.
                           </div>
                         </div>
-                        <div class="col-sm-9">
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="inputEmail3"
-                            placeholder="Country Name Here"
-                          />
-                        </div>
-                      </div> -->
+                      </div>
                       <div class="form-group row">
                         <div class="col-sm-3">
                           <div class="b-label">
@@ -220,7 +204,6 @@
                             type="date"
                             class="form-control"
                             id="customer_dob"
-                            name="customer_dob"
                             placeholder="Date of Birth Here"
                           />
                         </div>
@@ -230,7 +213,7 @@
                     <div class="card-body">
                       <div class="form-group m-b-0 text-right">
                         <button
-                          type="submit"
+                          type="button"
                           id="submitButton"
                           class="btn btn-info waves-effect waves-light"
                         >
@@ -290,96 +273,89 @@
     <!-- ============================================================== -->
     <%- include('layouts/scriptsLink') %>
     <script>
-      // Example starter JavaScript for disabling form submissions if there are invalid fields
-      (function () {
-        "use strict";
-        window.addEventListener(
-          "load",
-          function () {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName("needs-validation");
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(
-              forms,
-              function (form) {
-                form.addEventListener(
-                  "submit",
-                  function (event) {
-                    if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    form.classList.add("was-validated");
-                  },
-                  false
-                );
-              }
-            );
-          },
-          false
+      $(document).ready(() => {
+        const urlMobileNumber = new URLSearchParams(window.location.search).get(
+          "mobileNumber"
         );
-      })();
-      // const addCustomerForm = document.getElementById("add_new_customer");
-      // document.getElementById("submitButton").addEventListener("click", () => {
-      // Optionally, you can add additional validation here before submitting
-      // addCustomerForm.action = "/api/addCustomer";
-      // addCustomerForm.method = "post";
-      // addCustomerForm.submit();
-      // addCustomerForm.reset();
-      // window.location.href("/addSaleDetails")
-      // });
-      // for changing the mobile number depending on the request
-      document.addEventListener("DOMContentLoaded", () => {
-        // select mobile number field
-        // const submitButton = document.getElementById("submitButton");
-        // const form = document.getElementById("add_new_customer");
-        const mobileInput = document.getElementById("customer_mobile");
-        // receiving mobile number from URL
-        axios
-          .get(`/customer/addNewCustomer?mobileNumber=${mobileInput.value}`)
-          .then((response) => {
-            const urlMobileNumber = new URLSearchParams(
-              window.location.search
-            ).get("mobileNumber");
-            mobileInput.value = urlMobileNumber;
-          })
-          .catch((error) => console.error(error));
+        $("#customer_mobile").val(urlMobileNumber);
 
-        // submitButton.addEventListener("click", () => {
-        //   const formData = new FormData(form);
-        //   axios.post("/api/addCustomer", formData).then((response) => {
-        //     console.log(response);
-        //   });
-        // });
-      });
+        $("#submitButton").click(() => {
+          const fromData = {
+            customerMobile: $("#customer_mobile").val().trim(),
+            customerName: $("#customer_name").val().trim(),
+            customerEmail: $("#customer_email").val().trim(),
+            customerAddress: $("#customer_address").val().trim(),
+            customerDob: $("#customer_dob").val(),
+          };
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("add_new_customer");
+          const mobileRegex = /^\d{10}$/;
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          // Check if each field is valid
+          const isMobileValid = mobileRegex.test(fromData.customerMobile);
+          const isEmailValid = emailRegex.test(fromData.customerEmail);
+          const isNameValid = fromData.customerName.length > 3;
 
-        form.addEventListener("submit", function (event) {
-          event.preventDefault();
-
-          if (form.checkValidity()) {
-            // Send POST request using Axios
-            const formData = new FormData(form);
-            const jsonObject = {};
-            formData.forEach((value, key) => {
-              jsonObject[key] = value;
-            });
+          if (!isMobileValid) {
+            $("#wrong-mobile").show();
+          } else if (!isNameValid) {
+            $("#wrong-name").show();
+          } else {
             axios
-              .post("/customer/addCustomer", jsonObject)
+              .post("/customer/addCustomer", fromData)
               .then((response) => {
-                if (response.data.status) {
+                if (response.status === 200) {
                   window.location.href = `/sales/addSaleDetails?customer_id=${response.data.customer_id}`;
                 }
               })
-              .catch((error) => console.error(error));
-          } else {
-            // If form is invalid, trigger the form validation
-            form.reportValidity();
+              .catch((error) => {
+                if (error.response.status === 400) {
+                  // customer is already Exists
+                  console.log(error.response.data);
+                } else {
+                  console.error(error);
+                }
+              });
           }
+
+          $("#add_new_customer").change(() => {
+            $(".invalid-feedback").hide();
+          });
         });
+
+        // $("#customer_email").blur(() => {
+        //   if (!isEmailValid) {
+        //     $("#wrong-email").show();
+        //   }
+        // });
       });
+
+      // document.addEventListener("DOMContentLoaded", function () {
+      //   const form = document.getElementById("add_new_customer");
+
+      //   form.addEventListener("submit", function (event) {
+      //     event.preventDefault();
+
+      //     if (form.checkValidity()) {
+      //       // Send POST request using Axios
+      //       const formData = new FormData(form);
+      //       const jsonObject = {};
+      //       formData.forEach((value, key) => {
+      //         jsonObject[key] = value;
+      //       });
+      //       axios
+      //         .post("/customer/addCustomer", jsonObject)
+      //         .then((response) => {
+      //           if (response.data.status) {
+      //             window.location.href = `/sales/addSaleDetails?customer_id=${response.data.customer_id}`;
+      //           }
+      //         })
+      //         .catch((error) => console.error(error));
+      //     } else {
+      //       // If form is invalid, trigger the form validation
+      //       form.reportValidity();
+      //     }
+      //   });
+      // });
 
       // submitting the form data
     </script>

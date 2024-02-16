@@ -40,41 +40,53 @@ customerRoutes.get("/getCustomer/:customer_id", async (req, res) => {
 // ====================================//
 customerRoutes.post("/addCustomer", async (req, res) => {
   const {
-    customer_mobile,
-    customer_name,
-    customer_email,
-    customer_address,
-    customer_dob,
+    customerMobile,
+    customerName,
+    customerEmail,
+    customerAddress,
+    customerDob,
   } = req.body;
+  const isNewCustomerQuery =
+    "SELECT customer_mobile FROM customer_details WHERE customer_mobile = $1";
+  const addCustomerQuery =
+    "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address, customer_dob) VALUES ($1,$2,$3,$4,$5) RETURNING *;";
+  const addCustomerWithoutDateQuery =
+    "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address) VALUES ($1,$2,$3,$4) RETURNING *;";
   try {
-    const isNewCustomerQuery =
-      "SELECT customer_mobile FROM customer_details WHERE customer_mobile = $1";
-    const isNewCustomer = await db.query(isNewCustomerQuery, [customer_mobile]);
+    const isNewCustomer = await db.query(isNewCustomerQuery, [customerMobile]);
 
     if (isNewCustomer.rows.length === 0) {
       try {
-        const addCustomerQuery =
-          "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address, customer_dob) VALUES ($1,$2,$3,$4,$5);";
-        const getCustomerIdQuery =
-          "SELECT * FROM customer_details WHERE customer_mobile = $1";
-        await db.query(addCustomerQuery, [
-          customer_name,
-          customer_mobile,
-          customer_email,
-          customer_address,
-          customer_dob,
-        ]);
-        const result = await db.query(getCustomerIdQuery, [customer_mobile]);
-        const customerId = result.rows[0].customer_id;
-        res.send({ status: true, customer_id: customerId });
+        if (customerDob) {
+          const result = await db.query(addCustomerQuery, [
+            customerName,
+            customerMobile,
+            customerEmail,
+            customerAddress,
+            customerDob,
+          ]);
+          const customerId = result.rows[0].customer_id;
+          res.status(200).json({ customer_id: customerId });
+        } else {
+          const result = await db.query(addCustomerWithoutDateQuery, [
+            customerName,
+            customerMobile,
+            customerEmail,
+            customerAddress,
+          ]);
+          const customerId = result.rows[0].customer_id;
+          res.status(200).json({ customer_id: customerId });
+        }
       } catch (err) {
-        console.error(err.message);
+        res.status(500).json({ error: "Internal server error" });
       }
     } else {
-      const error = "Customer is already exist";
-      res.send(error);
+      res.status(400).json({ error: "Customer is already exist" });
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 // ==== Check customer is in database if yes then check is in Inprocess Table =====//

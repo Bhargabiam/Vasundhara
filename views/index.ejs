@@ -237,7 +237,7 @@
           <!-- ============================================================== -->
           <!-- Email campaign chart -->
           <!-- ============================================================== -->
-          <div class="row">
+          <div id="salesRatio" class="row">
             <div class="col-lg-3 col-md-6">
               <div class="card">
                 <div class="card-body">
@@ -519,7 +519,7 @@
                       </div>
                     </div>
                   </div>
-                  <div id="visitfromworld" style="height: 365px"></div>
+                  <!-- <div id="visitfromworld" style="height: 365px"></div> -->
                   <!-- row -->
                   <div class="row m-t-40 text-center text-lg-left">
                     <!-- column -->
@@ -959,6 +959,7 @@
     <!-- All Jquery -->
     <!-- ============================================================== -->
     <%- include('layouts/scriptsLink') %>
+    <script src="/static/dist/js/pages/all_page/user_data.js"></script>
     <script src="/static/dist/js/pages/dashboards/dashboard1.js"></script>
     <!--chartis chart-->
     <script src="/static/assets/libs/chartist/dist/chartist.min.js"></script>
@@ -972,6 +973,27 @@
     <!--This page plugins -->
     <!-- <script src="/static/assets/extra-libs/DataTables/datatables.min.js"></script>
     <script src="/static/dist/js/pages/datatable/datatable-basic.init.js"></script> -->
-    <script></script>
+    <script>
+      $(document).ready(() => {
+        // const userRoll = getUserData();
+        axios
+          .get("/auth/user")
+          .then(function (res) {
+            $("#userName").html(res.data.user_name);
+            $("#userFullName").html(res.data.user_name);
+            $("#userEmail").html(res.data.email);
+            dashBoardController(res.data.roll);
+            return res.data.roll;
+          })
+          .catch(function (error) {
+            console.error(error.message);
+          });
+        const dashBoardController = (roll) => {
+          if (roll == "cre") {
+            $("#salesRatio").hide();
+          }
+        };
+      });
+    </script>
   </body>
 </html>

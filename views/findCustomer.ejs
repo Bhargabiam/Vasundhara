@@ -96,42 +96,20 @@
                       type="text"
                       class="form-control"
                       id="customer_mobile"
-                      placeholder="First Name Here"
-                      name="customer_mobile"
+                      placeholder="Mobile Number Here"
+                      required
                     />
+                    <div
+                      id="wrong-number"
+                      class="invalid-feedback"
+                      style="display: none"
+                    >
+                      Please Enter 10 Digit Numer.
+                    </div>
                   </form>
                 </div>
               </div>
             </div>
-
-            <!-- <div
-              id="in-process"
-              class="col-lg-8 col-sm-12 order-lg-2 mr-auto"
-              style="display: none"
-            >
-              <div class="card">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="bg-primary p-2 d-flex">
-                      <div class="text-left text-white display-7">
-                        <i class="ti-user"></i>
-                      </div>
-                      <h4 class="ml-3 my-auto fw-normal text-white">
-                        Customer Details
-                      </h4>
-                    </div>
-                    <div id="inProcessTableContainer" class="card-body"></div>
-                    <button
-                      class="btn btn-success btn-rounded waves-effect waves-light m-t-20"
-                      onclick="addNewQuery(customerId)"
-                    >
-                      Start New Query
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-            <!-- div end -->
           </div>
 
           <!-- Not in process -->
@@ -151,7 +129,7 @@
                     <div class="card-body">
                       <div class="d-flex no-block align-items-center m-b-15">
                         <span
-                          ><i class="ti-user"></i>
+                          >Name:
                           <h4 id="customer-name"></h4
                         ></span>
                       </div>
@@ -159,8 +137,7 @@
                         No Active Query Found For This Customer
                       </h3>
                       <button
-                        class="btn btn-success btn-rounded waves-effect waves-light m-t-20"
-                        onclick="addNewQuery(customerId)"
+                        class="btn btn-success btn-rounded waves-effect waves-light m-t-20 process"
                       >
                         Start New Query
                       </button>
@@ -170,6 +147,31 @@
               </div>
             </div>
           </div>
+
+          <!-- No Customer Found -->
+          <div id="no-customer" class="row" style="display: none">
+            <div class="col-lg-4 col-sm-12 order-lg-2 m-auto">
+              <div class="card">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="bg-danger p-2 d-flex"></div>
+                    <div class="card-body">
+                      <h3 class="font-normal animated flash">
+                        No Data Found For This Number
+                      </h3>
+                      <button
+                        id="add-customer"
+                        class="btn btn-warning btn-rounded waves-effect waves-light m-t-20"
+                      >
+                        Add New Customer
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- test div -->
 
           <div id="in-process" class="row" style="display: none">
@@ -179,8 +181,7 @@
                   <h4 class="card-title">In process List</h4>
                   <div id="process-data" class="table-responsive"></div>
                   <button
-                    class="btn btn-success btn-rounded waves-effect waves-light m-t-20"
-                    onclick="addNewQuery(customerId)"
+                    class="btn btn-success btn-rounded waves-effect waves-light m-t-20 process"
                   >
                     Start New Query
                   </button>
@@ -233,80 +234,54 @@
     <!-- ============================================================== -->
     <%- include('layouts/scriptsLink') %>
     <script>
-      // Example starter JavaScript for disabling form submissions if there are invalid fields
-      (function () {
-        "use strict";
-        window.addEventListener(
-          "load",
-          function () {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName("needs-validation");
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(
-              forms,
-              function (form) {
-                form.addEventListener(
-                  "submit",
-                  function (event) {
-                    if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    form.classList.add("was-validated");
-                  },
-                  false
-                );
-              }
-            );
-          },
-          false
-        );
-      })();
-
-      const inProcessDiv = document.getElementById("in-process");
-      const customerName = document.getElementById("customer-name");
-      const notInProcess = document.getElementById("not-in-process");
-      const mobileInput = document.getElementById("customer_mobile");
-      const findCustomerForm = document.getElementById("find_customer_form");
-      const processData = document.getElementById("process-data");
       let customerId = "";
-      mobileInput.addEventListener("blur", () => {
-        const mobNumber = mobileInput.value;
-        axios
-          .post(`/customer/findCustomer/${mobNumber}`)
-          .then((response) => {
-            const customerData = response.data;
-            if (!customerData) {
-              addNewCustomer(mobNumber);
-            } else if (customerData.customerName) {
-              customerId = customerData.customerID;
-              inProcessDiv.style.display = "none";
-              notInProcess.style.display = "block";
-              customerName.innerHTML = customerData.customerName;
-            } else {
-              customerId = customerData.customerId;
-              const tableHTML = generateTable(customerData.inprocessData);
-              notInProcess.style.display = "none";
-              inProcessDiv.style.display = "block";
-              processData.innerHTML = tableHTML;
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-          });
-      });
+      let mobNumber = 0;
 
-      // For create New Customer
-      const addNewCustomer = (number) => {
-        window.location.href = `/customer/addNewCustomer?mobileNumber=${number}`;
-      };
+      $(document).ready(() => {
+        // When typing then hide boxes
+        $("#customer_mobile").on("input", () => {
+          $("#in-process").hide();
+          $("#not-in-process").hide();
+          $("#no-customer").hide();
+          $("#wrong-number").hide();
+        });
 
-      // For create Inprocess data Table
-      function generateTable(data) {
-        let tableHTML =
-          "<table class='table table-striped table-bordered display nowrap' style='width:100%'><thead><tr><th>Name</th><th>Metal</th><th>Executive</th><th>Product</th><th>Status</th><th>FollowUp</th><th>Action</th></tr></thead><tbody>";
-        data.forEach((row) => {
-          tableHTML += `<tr>
+        // find Details depending on MObile number
+        $("#customer_mobile").blur(() => {
+          mobNumber = $("#customer_mobile").val();
+          if (/^\d{10}$/.test(mobNumber)) {
+            axios
+              .post(`/customer/findCustomer/${mobNumber}`)
+              .then((response) => {
+                const customerData = response.data;
+                if (!customerData) {
+                  $("#no-customer").show();
+                  // addNewCustomer(mobNumber);
+                } else if (customerData.customerName) {
+                  customerId = customerData.customerID;
+                  $("#not-in-process").show();
+                  $("#customer-name").html(customerData.customerName);
+                } else {
+                  customerId = customerData.customerId;
+                  const tableHTML = generateTable(customerData.inprocessData);
+                  $("#in-process").show();
+                  $("#process-data").html(tableHTML);
+                }
+              })
+              .catch((error) => {
+                console.error("Error fetching user data:", error);
+              });
+          } else {
+            $("#wrong-number").show();
+          }
+        });
+
+        // For create Inprocess data Table
+        function generateTable(data) {
+          let tableHTML =
+            "<table class='table table-striped table-bordered display nowrap' style='width:100%'><thead><tr><th>Name</th><th>Metal</th><th>Executive</th><th>Product</th><th>Status</th><th>FollowUp</th><th>Action</th></tr></thead><tbody>";
+          data.forEach((row) => {
+            tableHTML += `<tr>
             <td>${row.customer_name}</td>
             <td>${row.metal_type}</td>
             <td>${row.executive_name}</td>
@@ -315,10 +290,27 @@
             <td>${row.followup_date}</td>
             <td><button class='btn btn-secondary' onclick='processButtonClick("${row.process_id}")'>Process</button></td>
             </tr>`;
-        });
-        tableHTML += "</tbody></table>";
-        return tableHTML;
-      }
+          });
+          tableHTML += "</tbody></table>";
+          return tableHTML;
+        }
+
+        // create New query
+        $(".process").click(() => addNewQuery(customerId));
+
+        $("#add-customer").click(() => addNewCustomer(mobNumber));
+        // End
+      });
+
+      // Add New Customer
+      const addNewCustomer = (number) => {
+        window.location.href = `/customer/addNewCustomer?mobileNumber=${number}`;
+      };
+
+      // Create New Query
+      const addNewQuery = (id) => {
+        window.location.href = `/sales/addSaleDetails?customer_id=${id}`;
+      };
 
       // For update in update inprocess data
       const processButtonClick = (processId) => {
@@ -326,29 +318,20 @@
       };
 
       // if (customerId) {
-      const getCustomerData = (customerId) => {
-        axios
-          .get(`/customer/getCustomer/${customerId}`)
-          .then((response) => {
-            const customerData = response.data;
-            if (customerData) {
-              mobileH4.innerHTML = customerData.customer_mobile;
-              nameH4.innerHTML = customerData.customer_name;
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching customer data:", error);
-          });
-      };
-
-      const addNewQuery = (id) => {
-        window.location.href = `/sales/addSaleDetails?customer_id=${id}`;
-      };
-      // } else {
-      //   mobileH4.innerHTML = "No customer Selected";
-      //   nameH4.innerHTML = "No customer Selected";
-      //   saleSubmit.disabled = true;
-      // }
+      // const getCustomerData = (customerId) => {
+      //   axios
+      //     .get(`/customer/getCustomer/${customerId}`)
+      //     .then((response) => {
+      //       const customerData = response.data;
+      //       if (customerData) {
+      //         mobileH4.innerHTML = customerData.customer_mobile;
+      //         nameH4.innerHTML = customerData.customer_name;
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.error("Error fetching customer data:", error);
+      //     });
+      // };
     </script>
   </body>
 </html>
