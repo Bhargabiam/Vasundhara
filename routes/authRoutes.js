@@ -23,7 +23,7 @@ authRoutes.post("/register", async (req, res) => {
 
   try {
     const checkResult = await db.query(
-      "SELECT * FROM user_list WHERE email = $1",
+      "SELECT * FROM user_list WHERE email = $1 AND user_status = true;",
       [username]
     );
 
@@ -42,12 +42,12 @@ authRoutes.post("/register", async (req, res) => {
             role,
             date,
           ]);
-          //   res.status(201).render("index.ejs");
           const user = result.rows[0];
-          req.login(user, (err) => {
-            console.log(err);
-            res.status(200).send(user);
-          });
+          // req.login(user, (err) => {
+          //   console.log(err);
+          //   res.status(200).send(user);
+          // });
+          res.status(200).json({ userData: user });
         }
       });
     }

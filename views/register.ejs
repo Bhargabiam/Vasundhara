@@ -189,6 +189,9 @@
     <!-- ============================================================== -->
     <!-- This page plugin js -->
     <!-- ============================================================== -->
+    <!-- alert Js -->
+    <script src="/static/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="/static/assets/libs/sweetalert2/sweet-alert.init.js"></script>
     <script>
       $('[data-toggle="tooltip "]').tooltip();
       $(".preloader ").fadeOut();
@@ -211,8 +214,14 @@
             axios
               .post("/auth/register", formData)
               .then(function (res) {
-                if (res.status === 200) {
-                  window.location.href = "/index/dashboard";
+                if (res.status == 200) {
+                  swal(
+                    "Success!",
+                    "Your account registration request send successfully.",
+                    "success"
+                  ).then(() => {
+                    window.location.href = "/";
+                  });
                 } else {
                   $("#errorMessage").html(
                     "Something went wrong, please try again later"
@@ -222,23 +231,23 @@
                 // Handle success, such as showing a success message to the user
               })
               .catch(function (error) {
-                if (error.response.status === 409) {
-                  $("#errorMessage").html(
-                    "Email is already registered. Please Sign in"
-                  );
-                  $("#errorBox").show();
-                }
-                if (error.response.status === 500) {
-                  $("#errorMessage").html(
-                    "Something went wrong, please try again later"
-                  );
-                  $("#errorBox").show();
-                } else {
-                  $("#errorMessage").html(
-                    "Internal Server Error, please try again later"
-                  );
-                  $("#errorBox").show();
-                }
+                // if (error.response.status === 409) {
+                //   $("#errorMessage").html(
+                //     "Email is already registered. Please Sign in"
+                //   );
+                //   $("#errorBox").show();
+                // }
+                // if (error.response.status === 500) {
+                //   $("#errorMessage").html(
+                //     "Something went wrong, please try again later"
+                //   );
+                //   $("#errorBox").show();
+                // } else {
+                //   $("#errorMessage").html(
+                //     "Internal Server Error, please try again later"
+                //   );
+                //   $("#errorBox").show();
+                // }
                 // Handle error, such as showing an error message to the user
               });
           }

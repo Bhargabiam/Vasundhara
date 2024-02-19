@@ -50,7 +50,8 @@ app.get("/", (req, res) => {
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {
-    const loginQuery = "SELECT * FROM user_list WHERE email = $1";
+    const loginQuery =
+      "SELECT * FROM user_list WHERE email = $1 AND user_status = true;";
     try {
       const result = await db.query(loginQuery, [username]);
       if (result.rows.length > 0) {

@@ -1,5 +1,6 @@
 import express from "express";
 import db from "../services/db.js";
+import { isAuthenticated } from "../middleware/authMiddleware.js";
 
 const customerRoutes = express.Router();
 
@@ -10,7 +11,7 @@ customerRoutes.get("/addNewCustomer", (req, res) => {
 });
 
 // i have to Check
-customerRoutes.get("/findCustomer", async (req, res) => {
+customerRoutes.get("/findCustomer", isAuthenticated, async (req, res) => {
   try {
     res.render("findCustomer");
   } catch (err) {
@@ -29,7 +30,6 @@ customerRoutes.get("/getCustomer/:customer_id", async (req, res) => {
       customerId,
     ]);
     const customerData = customerDataResult.rows[0];
-
     res.send(customerData);
   } catch (err) {
     res.send(err.message);

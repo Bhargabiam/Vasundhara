@@ -8,6 +8,7 @@ import productRoutes from "./productRoutes.js";
 import reportRoutes from "./reportRoutes.js";
 import tableRoutes from "./tableRoutes.js";
 import dashboardRoutes from "./dashboardRoutes.js";
+import userManag from "./userManagement.js";
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use("/product", productRoutes);
 router.use("/report", reportRoutes);
 router.use("/table", tableRoutes);
 router.use("/index", dashboardRoutes);
+router.use("/user", userManag);
 
 export default router;

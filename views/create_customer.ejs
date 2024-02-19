@@ -289,10 +289,8 @@
           };
 
           const mobileRegex = /^\d{10}$/;
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           // Check if each field is valid
           const isMobileValid = mobileRegex.test(fromData.customerMobile);
-          const isEmailValid = emailRegex.test(fromData.customerEmail);
           const isNameValid = fromData.customerName.length > 3;
 
           if (!isMobileValid) {
@@ -322,11 +320,13 @@
           });
         });
 
-        // $("#customer_email").blur(() => {
-        //   if (!isEmailValid) {
-        //     $("#wrong-email").show();
-        //   }
-        // });
+        $("#customer_email").change(() => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const isEmailValid = emailRegex.test($("#customer_email").val());
+          $("#wrong-email").toggle(
+            $("#customer_email").val().length !== 0 && !isEmailValid
+          );
+        });
       });
 
       // document.addEventListener("DOMContentLoaded", function () {
