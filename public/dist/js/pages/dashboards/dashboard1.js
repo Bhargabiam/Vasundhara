@@ -133,6 +133,142 @@ $(function () {
         }
       });
 
+    axios
+      .get("/report/inprocess-count-executive")
+      .then((res) => {
+        const data = res.data.countData;
+        if (data.length == 0) {
+          $("#pendingInprocess").html(
+            '<h2 class="text-primary ml-4">Something went wrong</h2>'
+          );
+        } else {
+          const tableHTML = generatePendingTable(res.data.countData);
+          $("#pendingInprocess").html(tableHTML);
+        }
+      })
+      .catch((err) => {
+        $("#pendingInprocess").html(
+          '<h2 class="text-danger ml-4">Something went wrong</h2>'
+        );
+        console.log(err);
+      });
+
+    axios
+      .get("/report/sales-count-executive")
+      .then((res) => {
+        const data = res.data.countData;
+        if (data.length == 0) {
+          $("#salesCountTable").html(
+            '<h2 class="text-primary ml-4">Something went wrong</h2>'
+          );
+        } else {
+          const tableHTML = generateCompleteTable(res.data.countData);
+          $("#salesCountTable").html(tableHTML);
+        }
+      })
+      .catch((err) => {
+        $("#salesCountTable").html(
+          '<h2 class="text-danger ml-4">Something went wrong</h2>'
+        );
+        console.log(err);
+      });
+
+    // ========================================================
+    // Product sales Count Table
+    // ========================================================
+    async function productCountTable(val) {
+      let date;
+      if (val == 1) {
+        date = `${sevenBeforeFormat}/${currentFormatDate}`;
+      } else if (val == 2) {
+        date = `${fifteenBeforeFormat}/${currentFormatDate}`;
+      } else if (val == 3) {
+        date = `${thertyBeforeFormat}/${currentFormatDate}`;
+      } else {
+        date = `${pevFirstBeforeFormat}/${pevLastBeforeFormat}`;
+      }
+      try {
+        const response = await axios.get(`/report/products-sale-count/${date}`);
+        const data = response.data.countData;
+        if (data.length == 0) {
+          $("#product-count-table").html(
+            '<h2 class="text-black ml-4 mt-5 d-block">No Data Found</h2>'
+          );
+        } else {
+          const tableHTML = generateProductTable(data);
+          $("#product-count-table").html(tableHTML);
+        }
+      } catch (err) {
+        console.log(err.message);
+        $("#product-count-table").html(
+          '<h2 class="text-primary ml-4 mt-5 d-block">Something went wrong</h2>'
+        );
+      }
+    }
+    productCountTable(1);
+    $("#product-select").change(() => {
+      const value = $("#product-select").val();
+      productCountTable(value);
+    });
+
+    // ==========================================================
+    //  Create Table Code
+    // ==========================================================
+
+    function generatePendingTable(data) {
+      let tableHTML =
+        "<table class='table table-hover'><thead><tr><th class='border-top-0'>Executive</th><th class='border-top-0'>Total Pendings</th></tr></thead><tbody>";
+      data.forEach((row) => {
+        tableHTML += `<tr>
+                <td>${row.name}</td>
+                <td>`;
+        if (row.count < 10) {
+          tableHTML += `<span class="label label-success label-rounded">${row.count}</span>`;
+        } else {
+          tableHTML += `<span class="label label-danger label-rounded">${row.count}</span>`;
+        }
+        tableHTML += `</td></tr>`;
+      });
+      tableHTML += "</tbody></table>";
+      return tableHTML;
+    }
+
+    function generateCompleteTable(data) {
+      let tableHTML =
+        "<table class='table table-hover'><thead><tr><th class='border-top-0'>Executive</th><th class='border-top-0'>Total Complete</th></tr></thead><tbody>";
+      data.forEach((row) => {
+        tableHTML += `<tr>
+                <td>${row.name}</td>
+                <td>`;
+        if (row.count < 10) {
+          tableHTML += `<span class="label label-danger label-rounded">${row.count}</span>`;
+        } else {
+          tableHTML += `<span class="label label-success label-rounded">${row.count}</span>`;
+        }
+        tableHTML += `</td></tr>`;
+      });
+      tableHTML += "</tbody></table>";
+      return tableHTML;
+    }
+
+    function generateProductTable(data) {
+      let tableHTML =
+        "<table class='table table-hover'><thead><tr><th class='border-top-0'>Product Name</th><th class='border-top-0'>Total</th></tr></thead><tbody>";
+      data.forEach((row) => {
+        tableHTML += `<tr>
+                <td>${row.name}</td>
+                <td>`;
+        if (row.count < 10) {
+          tableHTML += `<span class="label label-danger label-rounded">${row.count}</span>`;
+        } else {
+          tableHTML += `<span class="label label-success label-rounded">${row.count}</span>`;
+        }
+        tableHTML += `</td></tr>`;
+      });
+      tableHTML += "</tbody></table>";
+      return tableHTML;
+    }
+
     //   ============== Get Status Ratio ===============================//
     const getStatusRatioData = async (val) => {
       let date;

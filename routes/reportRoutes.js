@@ -267,4 +267,101 @@ reportRoutes.get("/salesCount/:to/:from", async (req, res) => {
   }
 });
 
+// get total inprocess count for each executives
+
+reportRoutes.get("/inprocess-count-executive", async (req, res) => {
+  const query =
+    "SELECT el.executive_name AS name, COUNT(cip.process_id) FROM customer_in_process cip INNER JOIN executive_list el ON el.executive_id = cip.executive_id GROUP BY el.executive_id, el.executive_name;";
+  try {
+    const count = (await db.query(query)).rows;
+    res.status(200).json({ countData: count });
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+});
+
+// get total sales count for each executives
+
+reportRoutes.get("/sales-count-executive", async (req, res) => {
+  const query =
+    "SELECT el.executive_name AS name, COUNT(sd.sales_id) FROM sales_data sd INNER JOIN executive_list el ON el.executive_id = sd.executive_id GROUP BY el.executive_id, el.executive_name;";
+  try {
+    const count = (await db.query(query)).rows;
+    res.status(200).json({ countData: count });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// get product count depent on Happy Status Between Two Dates
+
+reportRoutes.get("/products-sale-count/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
+  const query = `SELECT pl.product_name AS name, COUNT(sd.sales_id) FROM sales_data sd INNER JOIN product_list pl ON pl.product_id = sd.product_id WHERE sd.current_status = 'Happy' AND sd.end_date BETWEEN $1 AND $2 GROUP BY pl.product_id, pl.product_name;`;
+  try {
+    const countData = (await db.query(query, [to, from])).rows;
+    res.status(200).json({ countData: countData });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// get gold total sale between two dates
+
+reportRoutes.get("total-gold-complete", async (req, res) => {
+  const { to, from } = req.body;
+  const query =
+    "SELECT sales_id FROM sales_data WHERE metal_type = 'Gold' AND end_date BETWEEN $1 AND $2";
+
+  try {
+    const countData = (await db.query(query, [to, from])).rows;
+    res.status(200).json({ goldComplete: countData });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// get Diamond total sale between two dates
+
+reportRoutes.get("total-diamond-complete", async (req, res) => {
+  const { to, from } = req.body;
+  const query =
+    "SELECT sales_id FROM sales_data WHERE metal_type = 'Diamond' AND end_date BETWEEN $1 AND $2";
+
+  try {
+    const countData = (await db.query(query, [to, from])).rows;
+    res.status(200).json({ diamondComplete: countData });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// get Diamond total active Inprocess Between Two Dates
+reportRoutes.get("total-diamond-inprocess", async (req, res) => {
+  const { to, from } = req.body;
+  const query =
+    "SELECT COUNT(process_id) As total FROM customer_in_process WHERE metal_type = 'Diamond' AND process_status = true AND sale_date BETWEEN $1 AND $2 AND followup_date BETWEEN $1 AND $2";
+
+  try {
+    const countData = (await db.query(query, [to, from])).rows;
+    res.status(200).json({ diamondInprocess: countData });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// get gold total active Inprocess Between Two Dates
+reportRoutes.get("total-gold-inprocess", async (req, res) => {
+  const { to, from } = req.body;
+  const query =
+    "SELECT COUNT(process_id) As total FROM customer_in_process WHERE metal_type = 'Gold' AND process_status = true AND sale_date BETWEEN $1 AND $2 AND followup_date BETWEEN $1 AND $2";
+
+  try {
+    const countData = (await db.query(query, [to, from])).rows;
+    res.status(200).json({ goldInprocess: countData });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
 export default reportRoutes;
