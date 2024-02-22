@@ -1,6 +1,12 @@
 import express from "express";
 import db from "../services/db.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
+import { Vonage } from "@vonage/server-sdk";
+
+const vonage = new Vonage({
+  apiKey: "6e4ee504",
+  apiSecret: "ttiauLyBIBbmA99V",
+});
 
 const customerRoutes = express.Router();
 
@@ -52,6 +58,21 @@ customerRoutes.post("/addCustomer", async (req, res) => {
     "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address, customer_dob) VALUES ($1,$2,$3,$4,$5) RETURNING *;";
   const addCustomerWithoutDateQuery =
     "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address) VALUES ($1,$2,$3,$4) RETURNING *;";
+  async function sendSMS(number, id) {
+    const from = "Vasundhara";
+    const to = `91${number}`;
+    const text = "Welcome to Vasundhara Family. Your faily_member_id is " + id;
+    await vonage.sms
+      .send({ to, from, text })
+      .then((resp) => {
+        console.log("Message sent successfully");
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.log("There was an error sending the messages.");
+        console.error(err);
+      });
+  }
   try {
     const isNewCustomer = await db.query(isNewCustomerQuery, [customerMobile]);
 
@@ -66,6 +87,7 @@ customerRoutes.post("/addCustomer", async (req, res) => {
             customerDob,
           ]);
           const customerId = result.rows[0].customer_id;
+          // sendSMS(customerMobile, customerId);
           res.status(200).json({ customer_id: customerId });
         } else {
           const result = await db.query(addCustomerWithoutDateQuery, [
@@ -75,6 +97,7 @@ customerRoutes.post("/addCustomer", async (req, res) => {
             customerAddress,
           ]);
           const customerId = result.rows[0].customer_id;
+          // sendSMS(customerMobile, customerId);
           res.status(200).json({ customer_id: customerId });
         }
       } catch (err) {

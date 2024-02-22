@@ -9,6 +9,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";
 import db from "./services/db.js";
+import { Vonage } from "@vonage/server-sdk";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -31,6 +32,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Use the routes
 app.use("/", router);
 app.get("*", (req, res) => {

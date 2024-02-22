@@ -3,7 +3,10 @@
   <head>
     <%- include('layouts/head') %>
     <!-- This page plugin CSS -->
-    <link href="/static/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+    <link
+      href="/static/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css"
+      rel="stylesheet"
+    />
     <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
@@ -109,41 +112,46 @@
                       class="table table-striped table-bordered display"
                       style="width: 100%"
                     >
+                    <% if (data.length > 3) { %>
                       <thead>
-                        <tr>
-                          <% var saleData = JSON.parse(data); %>
-                          <% Object.keys(saleData[0]).forEach((key) => { %>
-                            <th><%= key %></th>
-                          <% }); %>
-                        </tr>
+                          <tr>
+                              <% var saleData = JSON.parse(data); %>
+                              <% Object.keys(saleData[0]).forEach((key) => { %>
+                                  <th><%= key %></th>
+                              <% }); %>
+                          </tr>
                       </thead>
                       <tbody>
-                        <% saleData.forEach((sale) => { %>
-                          <tr>
-                            <% Object.keys(sale).forEach((key) => { %>
-                              <td>
-                                <% if (key === 'Last Status' && sale[key] === null) { %>
-                                  <span class="label label-success label-rounded">Complete</span>
-                                <% } %>
-                                <% if (key === 'Last Status' && sale[key] === true) { %>
-                                  <span class="label label-rounded label-primary">Inprocess</span>
-                                <% } else { %>
-                                  <%= sale[key] %>
-                                <% } %>
-                              </td>
-                            <% }); %>
-                          </tr>
-                        <% }); %>
+                          <% saleData.forEach((sale) => { %>
+                              <tr>
+                                  <% Object.keys(sale).forEach((key) => { %>
+                                      <td>
+                                          <% if (key === 'Last Status') { %>
+                                              <% if (sale[key] === null) { %>
+                                                  <span class="label label-success label-rounded">Complete</span>
+                                              <% } else if (sale[key] === true) { %>
+                                                  <span class="label label-rounded label-primary">Inprocess</span>
+                                              <% } else { %>
+                                                  <%= sale[key] %>
+                                              <% } %>
+                                          <% } else { %>
+                                              <%= sale[key] %>
+                                          <% } %>
+                                      </td>
+                                  <% }); %>
+                              </tr>
+                          <% }); %>
                       </tbody>
                       <tfoot>
-                        <tr>
                           <tr>
-                            <% Object.keys(saleData[0]).forEach((key) => { %>
-                                <th><%= key %></th>
-                            <% }); %>
-                        </tr>
-                        </tr>
+                              <% Object.keys(saleData[0]).forEach((key) => { %>
+                                  <th><%= key %></th>
+                              <% }); %>
+                          </tr>
                       </tfoot>
+                  <% } else { %>
+                      <h1>No Data Found</h1>
+                  <% } %>
                     </table>
                   </div>
                 </div>

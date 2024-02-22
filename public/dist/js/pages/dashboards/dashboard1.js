@@ -133,6 +133,90 @@ $(function () {
         }
       });
 
+    // Total Gold Complete Count Last 30 days
+    axios
+      .get(
+        `/report/total-gold-complete/${thertyBeforeFormat}/${currentFormatDate}`
+      )
+      .then((res) => {
+        let goldComplete = res.data.goldComplete[0].count;
+        $("#gold-complete-count").html(goldComplete);
+        $("#gold-complete-progress-bar-inner").css(
+          "width",
+          (goldComplete / 150) * 100 + "%"
+        );
+        $("#gold-complete-progress-bar-inner").attr(
+          "aria-valuenow",
+          goldComplete
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    // Total Diamond complete Count Last 30 days
+    axios
+      .get(
+        `/report/total-diamond-complete/${thertyBeforeFormat}/${currentFormatDate}`
+      )
+      .then((res) => {
+        let diamondComplete = res.data.diamondComplete[0].count;
+        $("#diamond-complete-count").html(diamondComplete);
+        $("#diamond-complete-progress-bar-inner").css(
+          "width",
+          (diamondComplete / 150) * 100 + "%"
+        );
+        $("#diamond-complete-progress-bar-inner").attr(
+          "aria-valuenow",
+          diamondComplete
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    // Total Gold Inprocess Count Last 30 days
+    axios
+      .get(
+        `/report/total-gold-inprocess/${thertyBeforeFormat}/${currentFormatDate}`
+      )
+      .then((res) => {
+        let goldInprocess = res.data.goldInprocess[0].total;
+        $("#gold-panding-count").html(goldInprocess);
+        $("#gold-panding-progress-bar-inner").css(
+          "width",
+          (goldInprocess / 150) * 100 + "%"
+        );
+        $("#gold-panding-progress-bar-inner").attr(
+          "aria-valuenow",
+          goldInprocess
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    // Total Diamond Inprocess Count Last 30 days
+    axios
+      .get(
+        `/report/total-diamond-inprocess/${thertyBeforeFormat}/${currentFormatDate}`
+      )
+      .then((res) => {
+        let diamondInprocess = res.data.diamondInprocess[0].total;
+        $("#diamond-panding-count").html(diamondInprocess);
+        $("#diamond-panding-progress-bar-inner").css(
+          "width",
+          (diamondInprocess / 150) * 100 + "%"
+        );
+        $("#diamond-panding-progress-bar-inner").attr(
+          "aria-valuenow",
+          diamondInprocess
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
     axios
       .get("/report/inprocess-count-executive")
       .then((res) => {
@@ -305,10 +389,15 @@ $(function () {
       serviceCount,
       casualCount
     ) => {
-      $("#happy-ratio").html(`${happyCount}%`);
-      $("#unHappy-ratio").html(`${unHappyCount}%`);
-      $("#service-ratio").html(`${serviceCount}%`);
-      $("#casual-ratio").html(`${casualCount}%`);
+      let total =
+        parseInt(happyCount) +
+        parseInt(unHappyCount) +
+        parseInt(serviceCount) +
+        parseInt(casualCount);
+      $("#happy-ratio").html(`${Math.round((happyCount * 100) / total)}%`);
+      $("#unHappy-ratio").html(`${Math.round((unHappyCount * 100) / total)}%`);
+      $("#service-ratio").html(`${Math.round((serviceCount * 100) / total)}%`);
+      $("#casual-ratio").html(`${Math.round((casualCount * 100) / total)}%`);
     };
     //   =================================================================
     // Status ratio
@@ -347,24 +436,27 @@ $(function () {
   var chart = new Chartist.Line(
     ".sales",
     {
-      labels: [1, 2, 3, 4, 5, 6, 7],
+      labels: [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+      ],
       series: [
-        [24.5, 20.3, 42.7, 32, 34.9, 48.6, 40],
+        [24.5, 20.3, 22.7, 12, 24.9, 18.6, 10],
         [8.9, 5.8, 21.9, 5.8, 16.5, 6.5, 14.5],
       ],
     },
     {
       low: 0,
-      high: 48,
+      high: 30,
       showArea: true,
       fullWidth: true,
       plugins: [Chartist.plugins.tooltip()],
       axisY: {
         onlyInteger: true,
-        scaleMinSpace: 40,
+        scaleMinSpace: 30,
         offset: 20,
         labelInterpolationFnc: function (value) {
-          return value / 10 + "k";
+          return value;
         },
       },
     }
@@ -373,35 +465,34 @@ $(function () {
   // Offset x1 a tiny amount so that the straight stroke gets a bounding box
   // Straight lines don't get a bounding box
   // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-  chart.on("draw", function (ctx) {
-    if (ctx.type === "area") {
-      ctx.element.attr({
-        x1: ctx.x1 + 0.001,
-      });
-    }
-  });
+  // chart.on("draw", function (ctx) {
+  //   if (ctx.type === "area") {
+  //     ctx.element.attr({
+  //       x1: ctx.x1 + 0.001,
+  //     });
+  //   }
+  // });
 
   // Create the gradient definition on created event (always after chart re-render)
-  chart.on("created", function (ctx) {
-    var defs = ctx.svg.elem("defs");
-    defs
-      .elem("linearGradient", {
-        id: "gradient",
-        x1: 0,
-        y1: 1,
-        x2: 0,
-        y2: 0,
-      })
-      .elem("stop", {
-        offset: 0,
-        "stop-color": "rgba(255, 255, 255, 1)",
-      })
-      .parent()
-      .elem("stop", {
-        offset: 1,
-        "stop-color": "rgba(64, 196, 255, 1)",
-      });
-  });
+  // chart.on("created", function (ctx) {
+  //   var defs = ctx.svg.elem("defs");
+  //   defs
+  //     // .elem("linearGradient", {
+  //     //   id: "gradient",
+  //     //   x1: 0,
+  //     //   y1: 1,
+  //     //   x2: 0,
+  //     //   y2: 1,
+  //     // })
+  //     .elem("stop", {
+  //       offset: 1,
+  //       "stop-color": "rgba(4, 64, 9, 1)",
+  //     })
+  //     .parent()
+  //     .elem("stop", {
+  //       "stop-color": "rgba(8, 4, 64, 1)",
+  //     });
+  // });
 
   var chart = [chart];
 

@@ -212,7 +212,9 @@
                             name="executive_name"
                             required
                           >
-                            <option value="">Select Name</option>
+                            <option value="EXUT_165119_6146" selected disabled>
+                              Select Name
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -228,7 +230,9 @@
                             id="associate-name"
                             name="associate_name"
                           >
-                            <option value="5">Select Name</option>
+                            <option value="EXUT_165119_6146" selected>
+                              Select Name
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -245,7 +249,9 @@
                             name="product_name"
                             required
                           >
-                            <option value="">Select Name</option>
+                            <option value="" selected disabled>
+                              Select Name
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -569,17 +575,19 @@
         axios.get("/executive/getExecutive").then((response) => {
           const executiveList = response.data;
           executiveList.forEach((executive) => {
-            // Create a new option element for executiveSelect
-            const executiveOption = document.createElement("option");
-            executiveOption.value = executive.executive_id;
-            executiveOption.text = executive.executive_name;
-            executiveSelect.appendChild(executiveOption);
+            if (executive.executive_id != "EXUT_165119_6146") {
+              // Create a new option element for executiveSelect
+              const executiveOption = document.createElement("option");
+              executiveOption.value = executive.executive_id;
+              executiveOption.text = executive.executive_name;
+              executiveSelect.appendChild(executiveOption);
 
-            // Create a new option element for associativeSelect
-            const associativeOption = document.createElement("option");
-            associativeOption.value = executive.executive_id;
-            associativeOption.text = executive.executive_name;
-            associativeSelect.appendChild(associativeOption);
+              // Create a new option element for associativeSelect
+              const associativeOption = document.createElement("option");
+              associativeOption.value = executive.executive_id;
+              associativeOption.text = executive.executive_name;
+              associativeSelect.appendChild(associativeOption);
+            }
           });
         });
 

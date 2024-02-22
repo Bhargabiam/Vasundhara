@@ -308,10 +308,10 @@ reportRoutes.get("/products-sale-count/:to/:from", async (req, res) => {
 
 // get gold total sale between two dates
 
-reportRoutes.get("total-gold-complete", async (req, res) => {
-  const { to, from } = req.body;
+reportRoutes.get("/total-gold-complete/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
   const query =
-    "SELECT sales_id FROM sales_data WHERE metal_type = 'Gold' AND end_date BETWEEN $1 AND $2";
+    "SELECT COUNT(sales_id) FROM sales_data WHERE metal_type = 'Gold' AND end_date BETWEEN $1 AND $2";
 
   try {
     const countData = (await db.query(query, [to, from])).rows;
@@ -323,10 +323,10 @@ reportRoutes.get("total-gold-complete", async (req, res) => {
 
 // get Diamond total sale between two dates
 
-reportRoutes.get("total-diamond-complete", async (req, res) => {
-  const { to, from } = req.body;
+reportRoutes.get("/total-diamond-complete/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
   const query =
-    "SELECT sales_id FROM sales_data WHERE metal_type = 'Diamond' AND end_date BETWEEN $1 AND $2";
+    "SELECT COUNT(sales_id) FROM sales_data WHERE metal_type = 'Diamond' AND end_date BETWEEN $1 AND $2";
 
   try {
     const countData = (await db.query(query, [to, from])).rows;
@@ -337,8 +337,8 @@ reportRoutes.get("total-diamond-complete", async (req, res) => {
 });
 
 // get Diamond total active Inprocess Between Two Dates
-reportRoutes.get("total-diamond-inprocess", async (req, res) => {
-  const { to, from } = req.body;
+reportRoutes.get("/total-diamond-inprocess/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
   const query =
     "SELECT COUNT(process_id) As total FROM customer_in_process WHERE metal_type = 'Diamond' AND process_status = true AND sale_date BETWEEN $1 AND $2 AND followup_date BETWEEN $1 AND $2";
 
@@ -351,8 +351,8 @@ reportRoutes.get("total-diamond-inprocess", async (req, res) => {
 });
 
 // get gold total active Inprocess Between Two Dates
-reportRoutes.get("total-gold-inprocess", async (req, res) => {
-  const { to, from } = req.body;
+reportRoutes.get("/total-gold-inprocess/:to/:from", async (req, res) => {
+  const { to, from } = req.params;
   const query =
     "SELECT COUNT(process_id) As total FROM customer_in_process WHERE metal_type = 'Gold' AND process_status = true AND sale_date BETWEEN $1 AND $2 AND followup_date BETWEEN $1 AND $2";
 
