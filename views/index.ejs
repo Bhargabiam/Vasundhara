@@ -1406,8 +1406,8 @@
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
             confirmButtonText: "Yes, delete it!",
           }).then((result) => {
             if (result.isConfirmed) {
@@ -1416,8 +1416,8 @@
                 .then((res) => {
                   if (res.status == 200) {
                     Swal.fire({
-                      title: "The Internet?",
-                      text: "That thing is still around?",
+                      title: "Deleted",
+                      text: "Request was deleted successfully",
                       icon: "success",
                     }).then(() => {
                       createUserAllowTable();
@@ -1441,7 +1441,7 @@
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: "Yes, allow it!",
           }).then((result) => {
             if (result.isConfirmed) {
               axios
@@ -1449,8 +1449,8 @@
                 .then((res) => {
                   if (res.status == 200) {
                     Swal.fire({
-                      title: "The Internet?",
-                      text: "That thing is still around?",
+                      title: "Allowed",
+                      text: "Account Was created successfully",
                       icon: "success",
                     }).then(() => {
                       createUserAllowTable();

@@ -2,11 +2,33 @@ import express from "express";
 import db from "../services/db.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
 import { Vonage } from "@vonage/server-sdk";
+import axios from "axios";
 
 const vonage = new Vonage({
   apiKey: "6e4ee504",
   apiSecret: "ttiauLyBIBbmA99V",
 });
+
+const apiKey = "6e4ee504";
+const apiSecret = "ttiauLyBIBbmA99V";
+
+// Define the message data
+// const messageData = {
+//   from: "14157386102",
+//   to: "918240231376",
+//   message_type: "text",
+//   text: "This is a WhatsApp Message sent from the Messages API",
+//   channel: "whatsapp",
+// };
+
+// Define the request headers
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+  Authorization: `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString(
+    "base64"
+  )}`,
+};
 
 const customerRoutes = express.Router();
 
@@ -58,10 +80,11 @@ customerRoutes.post("/addCustomer", async (req, res) => {
     "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address, customer_dob) VALUES ($1,$2,$3,$4,$5) RETURNING *;";
   const addCustomerWithoutDateQuery =
     "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address) VALUES ($1,$2,$3,$4) RETURNING *;";
+
   async function sendSMS(number, id) {
     const from = "Vasundhara";
     const to = `91${number}`;
-    const text = "Welcome to Vasundhara Family. Your faily_member_id is " + id;
+    const text = `Welcome to Vasundhara Family. Your unique 'Id' is +${id}`;
     await vonage.sms
       .send({ to, from, text })
       .then((resp) => {
@@ -87,6 +110,19 @@ customerRoutes.post("/addCustomer", async (req, res) => {
             customerDob,
           ]);
           const customerId = result.rows[0].customer_id;
+          // Whatasapp Implimentation
+          // axios
+          //   .post(
+          //     "https://messages-sandbox.nexmo.com/v1/messages",
+          //     messageData,
+          //     { headers }
+          //   )
+          //   .then((response) => {
+          //     console.log("Message sent successfully:", response.data);
+          //   })
+          //   .catch((error) => {
+          //     console.error("Error sending message:", error.response.data);
+          //   });
           // sendSMS(customerMobile, customerId);
           res.status(200).json({ customer_id: customerId });
         } else {
@@ -97,6 +133,26 @@ customerRoutes.post("/addCustomer", async (req, res) => {
             customerAddress,
           ]);
           const customerId = result.rows[0].customer_id;
+          const messageData = {
+            from: "14157386102",
+            to: `91${customerMobile}`,
+            message_type: "text",
+            text: `Hi! ${customerName} Welcome To Vasundhara Diamond Roof. Here it's your unique Id ${customerId}, Thank You!`,
+            channel: "whatsapp",
+          };
+          // Whatasapp Implimentation
+          // axios
+          //   .post(
+          //     "https://messages-sandbox.nexmo.com/v1/messages",
+          //     messageData,
+          //     { headers }
+          //   )
+          //   .then((response) => {
+          //     console.log("Message sent successfully:", response.data);
+          //   })
+          //   .catch((error) => {
+          //     console.error("Error sending message:", error.response.data);
+          //   });
           // sendSMS(customerMobile, customerId);
           res.status(200).json({ customer_id: customerId });
         }
