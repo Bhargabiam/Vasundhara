@@ -13,13 +13,13 @@ const apiKey = "6e4ee504";
 const apiSecret = "ttiauLyBIBbmA99V";
 
 // Define the message data
-// const messageData = {
-//   from: "14157386102",
-//   to: "918240231376",
-//   message_type: "text",
-//   text: "This is a WhatsApp Message sent from the Messages API",
-//   channel: "whatsapp",
-// };
+const messageData = {
+  from: "14157386102",
+  to: "918240231376",
+  message_type: "text",
+  text: "This is a WhatsApp Message sent from the Messages API",
+  channel: "whatsapp",
+};
 
 // Define the request headers
 const headers = {
@@ -81,21 +81,21 @@ customerRoutes.post("/addCustomer", async (req, res) => {
   const addCustomerWithoutDateQuery =
     "INSERT INTO customer_details (customer_name, customer_mobile, customer_email, customer_address) VALUES ($1,$2,$3,$4) RETURNING *;";
 
-  async function sendSMS(number, id) {
-    const from = "Vasundhara";
-    const to = `91${number}`;
-    const text = `Welcome to Vasundhara Family. Your unique 'Id' is +${id}`;
-    await vonage.sms
-      .send({ to, from, text })
-      .then((resp) => {
-        console.log("Message sent successfully");
-        console.log(resp);
-      })
-      .catch((err) => {
-        console.log("There was an error sending the messages.");
-        console.error(err);
-      });
-  }
+  // async function sendSMS(number, id) {
+  //   const from = "Vasundhara";
+  //   const to = `91${number}`;
+  //   const text = `Welcome to Vasundhara Family. Your unique 'Id' is +${id}`;
+  //   await vonage.sms
+  //     .send({ to, from, text })
+  //     .then((resp) => {
+  //       console.log("Message sent successfully");
+  //       console.log(resp);
+  //     })
+  //     .catch((err) => {
+  //       console.log("There was an error sending the messages.");
+  //       console.error(err);
+  //     });
+  // }
   try {
     const isNewCustomer = await db.query(isNewCustomerQuery, [customerMobile]);
 
@@ -133,13 +133,13 @@ customerRoutes.post("/addCustomer", async (req, res) => {
             customerAddress,
           ]);
           const customerId = result.rows[0].customer_id;
-          const messageData = {
-            from: "14157386102",
-            to: `91${customerMobile}`,
-            message_type: "text",
-            text: `Hi! ${customerName} Welcome To Vasundhara Diamond Roof. Here it's your unique Id ${customerId}, Thank You!`,
-            channel: "whatsapp",
-          };
+          // const messageData = {
+          //   from: "14157386102",
+          //   to: `91${customerMobile}`,
+          //   message_type: "text",
+          //   text: `Hi! ${customerName} Welcome To Vasundhara Diamond Roof. Here it's your unique Id ${customerId}, Thank You!`,
+          //   channel: "whatsapp",
+          // };
           // Whatasapp Implimentation
           // axios
           //   .post(

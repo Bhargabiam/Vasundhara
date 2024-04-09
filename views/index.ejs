@@ -75,7 +75,7 @@
           <!-- ============================================================== -->
           <!-- Sales chart -->
           <!-- ============================================================== -->
-          <div class="card-group">
+          <div class="card-group row">
             <!-- Column Total Client -->
             <div class="card">
               <div class="card-body">
@@ -408,7 +408,7 @@
           <!-- ============================================================== -->
           <!-- Email campaign chart -->
           <!-- ============================================================== -->
-          <div id="salesRatio" class="row">
+          <div id="salesRatio" class="row cre-hide">
             <div class="col-lg-4 col-md-12">
               <div class="card">
                 <div class="card-body">
@@ -523,7 +523,7 @@
           <!-- ============================================================== -->
           <div class="row">
             <!-- column -->
-            <div class="col-lg-4 col-md-12 order-lg-3 order-md-1">
+            <div class="col-lg-4 col-md-12 order-lg-3 order-md-1 cre-hide">
               <div class="card">
                 <div class="card-body m-b-0">
                   <h4 class="card-title">
@@ -737,6 +737,19 @@
                 </div>
               </div>
             </div>
+            <!-- column -->
+            <div class="col-lg-4 cre-hide">
+              <div class="card">
+                <div class="card-body bg-cyan">
+                  <h4 class="card-title text-white m-0">User Request</h4>
+                </div>
+                <div
+                  id="pandingList"
+                  class="comment-widgets scrollable"
+                  style="height: 430px"
+                ></div>
+              </div>
+            </div>
           </div>
           <!-- ============================================================== -->
           <!-- Ravenue - page-view-bounce rate -->
@@ -746,13 +759,13 @@
           <!-- ============================================================== -->
           <div class="row">
             <!-- column -->
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Recent Comments</h4>
                 </div>
                 <div class="comment-widgets scrollable" style="height: 430px">
-                  <!-- Comment Row -->
+                 
                   <div class="d-flex flex-row comment-row m-t-0">
                     <div class="p-2">
                       <img
@@ -789,7 +802,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Comment Row -->
+                  
                   <div class="d-flex flex-row comment-row">
                     <div class="p-2">
                       <img
@@ -826,7 +839,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Comment Row -->
+                  
                   <div class="d-flex flex-row comment-row">
                     <div class="p-2">
                       <img
@@ -863,7 +876,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Comment Row -->
+                  
                   <div class="d-flex flex-row comment-row m-t-0">
                     <div class="p-2">
                       <img
@@ -902,9 +915,9 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- column -->
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center p-b-15">
@@ -1084,7 +1097,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <!-- ============================================================== -->
@@ -1092,7 +1105,7 @@
           <!-- =============================================================== -->
           <div class="row">
             <!-- column -->
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
               <div class="card">
                 <div class="card-body bg-cyan">
                   <h4 class="card-title text-white m-0">User Request</h4>
@@ -1103,7 +1116,7 @@
                   style="height: 330px"
                 ></div>
               </div>
-            </div>
+            </div> -->
             <!-- column -->
             <!-- <div class="col-lg-6">
               <div class="card">
@@ -1353,7 +1366,7 @@
           });
         const dashBoardController = (roll) => {
           if (roll == "cre") {
-            $("#salesRatio").hide();
+            $(".cre-hide").hide();
           }
         };
 

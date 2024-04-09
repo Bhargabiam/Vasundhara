@@ -37,6 +37,11 @@ CREATE TABLE product_list (
 	status BOOLEAN
 );
 
+CREATE TABLE session (
+  sid VARCHAR,
+  sess JSON,
+  expire timestamp without time zone(6)
+);
 
 
 CREATE TABLE customer_in_process (
@@ -61,7 +66,8 @@ CREATE TABLE customer_in_process (
     sale_date DATE,
 	followup_date DATE,
     visit_dates VARCHAR(255),
-	process_status BOOLEAN
+	process_status BOOLEAN,
+followup_date DATE
 );
 
 
@@ -103,7 +109,8 @@ CREATE TABLE user_list (
     password VARCHAR(200),
     roll VARCHAR(20),
     create_date DATE DEFAULT CURRENT_DATE,
-    user_status BOOLEAN DEFAULT true
+    user_status BOOLEAN DEFAULT false,
+    allow_status BOOLEAN DEFAULT true
 );
 
 
